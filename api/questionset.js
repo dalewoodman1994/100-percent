@@ -1,9 +1,8 @@
 // Vercel Serverless Function: /api/questionset
-// Returns a question set for flags (quickfire 30 / hardmode 195)
+// Returns a fresh question set every request (NO CACHING)
 
 let flagsCache = {
   loaded: false,
-  updatedAt: null,
   countries: [],
 };
 
@@ -59,7 +58,9 @@ function buildMultipleChoiceQuestion(country, allCountries) {
 async function loadFlagsIntoCache() {
   const res = await fetch(RESTCOUNTRIES_ALL);
   if (!res.ok) {
-    throw new Error(`REST Countries fetch failed: ${res.status} ${res.statusText}`);
+    throw new Error(
+      `REST Countries fetch failed: ${res.status} ${res.statusText}`
+    );
   }
 
   const all = await res.json();
@@ -68,9 +69,9 @@ async function loadFlagsIntoCache() {
     .filter((c) => c && c.cca2 && c.name?.common)
     .filter(isIn195);
 
-  // Deduplicate by cca2
   const seen = new Set();
   const deduped = [];
+
   for (const c of filtered) {
     const code = String(c.cca2).toUpperCase();
     if (!seen.has(code)) {
@@ -81,7 +82,6 @@ async function loadFlagsIntoCache() {
 
   flagsCache = {
     loaded: true,
-    updatedAt: new Date().toISOString(),
     countries: deduped,
   };
 }
@@ -92,7 +92,9 @@ module.exports = async (req, res) => {
     const category = String(req.query.category || "flags").toLowerCase();
 
     if (category !== "flags") {
-      return res.status(400).json({ error: "Unknown category. Use flags for now." });
+      return res.status(400).json({
+        error: "Unknown category. Only 'flags' supported right now.",
+      });
     }
 
     if (!flagsCache.loaded) {
@@ -105,14 +107,18 @@ module.exports = async (req, res) => {
     shuffleInPlace(countries);
 
     const runCountries =
-      mode === "hardmode" ? countries.slice(0, 195) : countries.slice(0, 30);
+      mode === "hardmode"
+        ? countries.slice(0, 195)
+        : countries.slice(0, 30);
 
     const questions = runCountries.map((c) =>
       buildMultipleChoiceQuestion(c, flagsCache.countries)
     );
 
-    // Cache at the edge for speed (Vercel)
-    res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate=86400");
+    // 🚫 Disable ALL caching (important fix)
+    res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
+    res.setHeader("Pragma", "no-cache");
+    res.setHeader("Expires", "0");
 
     return res.json({
       mode,
@@ -121,7 +127,9 @@ module.exports = async (req, res) => {
       totalAvailable: flagsCache.countries.length,
       totalUsed: questions.length,
       questions,
+      generatedAt: Date.now(), // forces uniqueness
     });
+
   } catch (e) {
     return res.status(500).json({ error: e.message });
   }
