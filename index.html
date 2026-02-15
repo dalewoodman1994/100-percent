@@ -43,8 +43,8 @@ body{
 }
 .btnPrimary{background:rgba(124,92,255,.45);}
 .bigPlay{
-  padding:18px !important;
-  font-size:22px !important;
+  padding:18px!important;
+  font-size:22px!important;
   font-weight:900;
 }
 
@@ -61,11 +61,19 @@ body{
 }
 #flag{width:100%;display:block;}
 
-.choices{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+.choices{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 .choice.correct{outline:2px solid var(--good);}
 .choice.wrong{outline:2px solid var(--bad);}
 
-.status{margin-top:10px;font-weight:800;}
+.status{
+  margin-top:10px;
+  font-weight:800;
+}
 .status.good{color:var(--good);}
 .status.bad{color:var(--bad);}
 .status.neutral{color:var(--muted);}
@@ -94,6 +102,7 @@ body{
 </head>
 
 <body>
+
 <div class="wrap">
 
 <!-- HOME -->
@@ -122,8 +131,12 @@ body{
 </div>
 
 <div class="content">
-<div class="flagWrap"><img id="flag"></div>
+<div class="flagWrap">
+<img id="flag">
+</div>
+
 <div class="choices" id="choices"></div>
+
 <div id="status" class="status neutral"></div>
 <div id="note" class="note"></div>
 
@@ -131,6 +144,7 @@ body{
 <button id="btnQuit" class="btn">Home</button>
 <button id="btnRestartRun" class="btn">Restart</button>
 </div>
+
 </div>
 </div>
 </section>
@@ -147,6 +161,7 @@ body{
 <div class="resultBig" id="endPercent">0%</div>
 <div class="resultSub" id="endLine">Score: 0 / 30 (0%)</div>
 <div class="resultSub" id="endPBLine">Best: 0 / 30</div>
+
 <div class="note" id="endTryAgain"></div>
 
 <div class="divider"></div>
@@ -166,6 +181,7 @@ PLAY AGAIN
 </div>
 
 <script>
+
 let mode="quickfire";
 let category="flags";
 let targetTotal=30;
@@ -173,11 +189,13 @@ let questions=[];
 let idx=0;
 let correct=0;
 let locked=false;
+let streak=0;
 
+/* ---- ELEMENTS ---- */
 const screens={
-home:document.getElementById("home"),
-play:document.getElementById("play"),
-end:document.getElementById("end")
+ home:document.getElementById("home"),
+ play:document.getElementById("play"),
+ end:document.getElementById("end")
 };
 
 const flag=document.getElementById("flag");
@@ -195,21 +213,23 @@ const endLine=document.getElementById("endLine");
 const endPBLine=document.getElementById("endPBLine");
 const endTryAgain=document.getElementById("endTryAgain");
 
+/* ---- HELPERS ---- */
 function show(s){
  Object.values(screens).forEach(x=>x.classList.remove("active"));
  screens[s].classList.add("active");
 }
 
-function pbKey(){return `pb_${category}_${mode}`;}
-function getPB(){return Number(localStorage.getItem(pbKey()))||0;}
-function setPB(v){localStorage.setItem(pbKey(),v);}
+function pbKey(){ return `pb_${category}_${mode}`; }
+function getPB(){ return Number(localStorage.getItem(pbKey()))||0; }
+function setPB(v){ localStorage.setItem(pbKey(),v); }
 
 function renderHud(){
- hudMode.textContent=mode==="hardmode"?"Hardmode":"Quickfire";
- hudProgress.textContent=`${correct} / ${targetTotal}`;
- hudPB.textContent=`PB: ${getPB()} / ${targetTotal}`;
+ hudMode.textContent = mode==="hardmode" ? "Hardmode":"Quickfire";
+ hudProgress.textContent = `${correct} / ${targetTotal}`;
+ hudPB.textContent = `PB: ${getPB()} / ${targetTotal}`;
 }
 
+/* ---- NEAR MISS PSYCHOLOGY ---- */
 function pickTryAgainLine(score,total){
  const pct=Math.round((score/total)*100);
  if(score>=total-1) return "ONE away from 100% 😱 run it back!";
@@ -219,8 +239,12 @@ function pickTryAgainLine(score,total){
  return "Warm-up round 😄 try again!";
 }
 
+/* ---- GAME FLOW ---- */
 async function startRun(m){
- mode=m; idx=0; correct=0;
+ mode=m;
+ correct=0;
+ idx=0;
+ streak=0;
  show("play");
 
  const res=await fetch(`/api/questionset?mode=${mode}&category=${category}`,{cache:"no-store"});
@@ -228,6 +252,7 @@ async function startRun(m){
 
  questions=data.questions;
  targetTotal=data.totalPlanned;
+
  renderHud();
  showQuestion();
 }
@@ -259,11 +284,21 @@ function answer(i,btn){
  [...document.querySelectorAll(".choice")].forEach(b=>b.disabled=true);
 
  if(i===q.correct_index){
+
    btn.classList.add("correct");
-   statusEl.className="status good";
-   statusEl.textContent="✅ Correct";
    correct++;
+   streak++;
+
    if(correct>getPB()) setPB(correct);
+
+   statusEl.className="status good";
+
+   // ⭐ dopamine streak message
+   if(streak>=3){
+     statusEl.textContent=`🔥 ${streak} streak`;
+   }else{
+     statusEl.textContent="✅ Correct";
+   }
 
    setTimeout(()=>{
      idx++;
@@ -272,6 +307,9 @@ function answer(i,btn){
    },400);
 
  }else{
+
+   streak=0;
+
    statusEl.className="status bad";
    statusEl.textContent="❌ Wrong";
    btn.classList.add("wrong");
@@ -289,6 +327,7 @@ function endRun(title){
  const pct=Math.round((correct/targetTotal)*100);
 
  show("end");
+
  endTitle.textContent=title;
  endPercent.textContent=`${pct}%`;
  endLine.textContent=`Score: ${correct} / ${targetTotal} (${pct}%)`;
@@ -298,12 +337,14 @@ function endRun(title){
  setTimeout(()=>document.getElementById("btnPlayAgain").focus(),100);
 }
 
-document.getElementById("btnQuickfire").onclick=()=>startRun("quickfire");
-document.getElementById("btnHardmode").onclick=()=>startRun("hardmode");
-document.getElementById("btnQuit").onclick=()=>show("home");
-document.getElementById("btnRestartRun").onclick=()=>startRun(mode);
-document.getElementById("btnPlayAgain").onclick=()=>startRun(mode);
-document.getElementById("btnEndHome").onclick=()=>show("home");
+/* ---- BUTTONS ---- */
+btnQuickfire.onclick=()=>startRun("quickfire");
+btnHardmode.onclick=()=>startRun("hardmode");
+btnQuit.onclick=()=>show("home");
+btnRestartRun.onclick=()=>startRun(mode);
+btnPlayAgain.onclick=()=>startRun(mode);
+btnEndHome.onclick=()=>show("home");
+
 </script>
 
 </body>
