@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>100 Percent</title>
 
 <style>
@@ -21,10 +21,10 @@ body{
   background:var(--bg);
   color:var(--text);
 }
-.wrap{max-width:520px;margin:auto;padding:16px;}
+.wrap{max-width:520px;margin:auto;padding:14px;}
 .card{
   border:1px solid var(--border);
-  border-radius:18px;
+  border-radius:16px;
   background:rgba(255,255,255,.03);
   overflow:hidden;
 }
@@ -36,24 +36,36 @@ body{
   padding:14px;
   border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.06);
   color:white;
   font-weight:700;
   cursor:pointer;
 }
 .btnPrimary{
-  background:rgba(124,92,255,.4);
+  background:rgba(124,92,255,.45);
 }
+
+.bigPlay{
+  padding:18px !important;
+  font-size:22px !important;
+  font-weight:900;
+}
+
 .row{display:flex;gap:10px;margin-top:10px;}
 .row .btn{flex:1;}
 
 .screen{display:none;}
 .screen.active{display:block;}
 
-.flagWrap{border-radius:14px;overflow:hidden;border:1px solid var(--border);}
+.flagWrap{
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--border);
+}
 #flag{width:100%;display:block;}
 
 .choices{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
+
 .choice.correct{outline:2px solid var(--good);}
 .choice.wrong{outline:2px solid var(--bad);}
 
@@ -63,21 +75,24 @@ body{
 .status.neutral{color:var(--muted);}
 
 .resultBig{
-  font-size:36px;
-  font-weight:900;
+  font-size:42px;
+  font-weight:1000;
   text-align:center;
 }
+
 .resultSub{
   text-align:center;
   color:var(--muted);
   margin-top:6px;
 }
+
 .note{
   text-align:center;
-  color:var(--muted);
   margin-top:10px;
+  color:var(--muted);
   font-size:14px;
 }
+
 .divider{
   height:1px;
   background:var(--border);
@@ -91,83 +106,83 @@ body{
 
 <!-- HOME -->
 <section id="home" class="screen active">
-  <div class="card">
-    <div class="header">
-      <h1>100 Percent</h1>
-      <p style="color:var(--muted)">One mistake ends your run.</p>
-    </div>
-    <div class="content">
-      <button id="btnQuickfire" class="btn btnPrimary">Quickfire (30)</button>
-      <div class="row">
-        <button id="btnHardmode" class="btn">Hardmode (195)</button>
-      </div>
-    </div>
-  </div>
+<div class="card">
+<div class="header">
+<h1>100 Percent</h1>
+<p style="color:var(--muted)">One mistake ends your run.</p>
+</div>
+<div class="content">
+<button id="btnQuickfire" class="btn btnPrimary">Quickfire (30)</button>
+<div class="row">
+<button id="btnHardmode" class="btn">Hardmode (195)</button>
+</div>
+</div>
+</div>
 </section>
 
 <!-- PLAY -->
 <section id="play" class="screen">
-  <div class="card">
-    <div class="header">
-      <div id="hudMode">Quickfire</div>
-      <div id="hudProgress" style="color:var(--muted)">0 / 30</div>
-      <div id="hudPB" style="color:var(--muted)">PB: 0 / 30</div>
-    </div>
+<div class="card">
+<div class="header">
+<div id="hudMode">Quickfire</div>
+<div id="hudProgress" style="color:var(--muted)">0 / 30</div>
+<div id="hudPB" style="color:var(--muted)">PB: 0 / 30</div>
+</div>
 
-    <div class="content">
-      <div class="flagWrap">
-        <img id="flag"/>
-      </div>
-      <div class="choices" id="choices"></div>
-      <div id="status" class="status neutral"></div>
-      <div id="note" class="note"></div>
+<div class="content">
+<div class="flagWrap"><img id="flag"></div>
+<div class="choices" id="choices"></div>
+<div id="status" class="status neutral"></div>
+<div id="note" class="note"></div>
 
-      <div class="row">
-        <button id="btnQuit" class="btn">Home</button>
-        <button id="btnRestartRun" class="btn">Restart</button>
-      </div>
-    </div>
-  </div>
+<div class="row">
+<button id="btnQuit" class="btn">Home</button>
+<button id="btnRestartRun" class="btn">Restart</button>
+</div>
+</div>
+</div>
 </section>
 
 <!-- END -->
 <section id="end" class="screen">
-  <div class="card">
-    <div class="header">
-      <h2 id="endTitle">Run failed</h2>
-    </div>
+<div class="card">
+<div class="header">
+<h2 id="endTitle">Run failed</h2>
+</div>
 
-    <div class="content">
+<div class="content">
 
-      <div class="resultBig" id="endPercent">0%</div>
+<div class="resultBig" id="endPercent">0%</div>
 
-      <div class="resultSub" id="endLine">
-        Score: 0 / 30 (0%)
-      </div>
+<div class="resultSub" id="endLine">
+Score: 0 / 30 (0%)
+</div>
 
-      <div class="resultSub" id="endPBLine">
-        Best: 0 / 30
-      </div>
+<div class="resultSub" id="endPBLine">
+Best: 0 / 30
+</div>
 
-      <div class="note" id="endTryAgain"></div>
+<div class="note" id="endTryAgain"></div>
 
-      <div class="divider"></div>
+<div class="divider"></div>
 
-      <button id="btnPlayAgain" class="btn btnPrimary" style="font-size:18px;">
-        Play again
-      </button>
+<!-- ⭐ UI tweak: BIG visual restart target -->
+<button id="btnPlayAgain" class="btn btnPrimary bigPlay">
+PLAY AGAIN
+</button>
 
-      <div class="row">
-        <button id="btnEndHome" class="btn">Home</button>
-      </div>
+<div class="row">
+<button id="btnEndHome" class="btn">Home</button>
+</div>
 
-    </div>
-  </div>
+</div>
+</div>
 </section>
 
 </div>
 
 <script>
+
 let mode="quickfire";
 let category="flags";
 let targetTotal=30;
@@ -176,39 +191,25 @@ let idx=0;
 let correct=0;
 let locked=false;
 
-const TRY_AGAIN_LINES=[
-"So close — run it back 😄",
-"That one doesn’t count… again! 😅",
-"You’ve got this. One more try 👀",
-"Warm-up round. Now lock in 🔒",
-"Your brain’s loading… try again ⚡",
-"That was practice. Next one is 100% ✅"
-];
-
-function pickTryAgainLine(){
- return TRY_AGAIN_LINES[Math.floor(Math.random()*TRY_AGAIN_LINES.length)];
-}
-
 const screens={
-home:document.getElementById("home"),
-play:document.getElementById("play"),
-end:document.getElementById("end")
+home:home,
+play:play,
+end:end
 };
 
 const flag=document.getElementById("flag");
-const choicesDiv=document.getElementById("choices");
-const statusEl=document.getElementById("status");
-const noteEl=document.getElementById("note");
-
+const choicesDiv=choices;
+const statusEl=status;
+const noteEl=note;
 const hudMode=document.getElementById("hudMode");
 const hudProgress=document.getElementById("hudProgress");
 const hudPB=document.getElementById("hudPB");
 
-const endTitle=document.getElementById("endTitle");
-const endPercent=document.getElementById("endPercent");
-const endLine=document.getElementById("endLine");
-const endPBLine=document.getElementById("endPBLine");
-const endTryAgain=document.getElementById("endTryAgain");
+const endTitle=endTitle;
+const endPercent=endPercent;
+const endLine=endLine;
+const endPBLine=endPBLine;
+const endTryAgain=endTryAgain;
 
 function show(s){
  Object.values(screens).forEach(x=>x.classList.remove("active"));
@@ -225,17 +226,26 @@ function renderHud(){
  hudPB.textContent=`PB: ${getPB()} / ${targetTotal}`;
 }
 
+/* ⭐ NEAR MISS PSYCHOLOGY */
+function pickTryAgainLine(score,total){
+ const pct=Math.round((score/total)*100);
+
+ if(score>=total-1) return "ONE away from 100% 😱 run it back!";
+ if(pct>=80) return "You were SO close… next run is it 🔥";
+ if(pct>=60) return "You're getting sharp 👀 go again!";
+ if(pct>=40) return "Nice progress — keep pushing 💪";
+ return "Warm-up round 😄 try again!";
+}
+
 async function startRun(m){
- mode=m;
- correct=0;
- idx=0;
+ mode=m; idx=0; correct=0;
  show("play");
 
  const res=await fetch(`/api/questionset?mode=${mode}&category=${category}`,{cache:"no-store"});
  const data=await res.json();
-
  questions=data.questions;
  targetTotal=data.totalPlanned;
+
  renderHud();
  showQuestion();
 }
@@ -259,20 +269,12 @@ function showQuestion(){
  });
 }
 
-function highlightCorrect(correctIndex,clicked,q){
- clicked.classList.add("wrong");
- const btns=[...document.querySelectorAll(".choice")];
- btns[correctIndex].classList.add("correct");
- noteEl.textContent=`Correct answer: ${q.choices[correctIndex]}`;
-}
-
 function answer(i,btn){
  if(locked)return;
  locked=true;
 
  const q=questions[idx];
- const buttons=[...document.querySelectorAll(".choice")];
- buttons.forEach(b=>b.disabled=true);
+ [...document.querySelectorAll(".choice")].forEach(b=>b.disabled=true);
 
  if(i===q.correct_index){
    btn.classList.add("correct");
@@ -283,7 +285,7 @@ function answer(i,btn){
 
    setTimeout(()=>{
     idx++;
-    if(idx>=questions.length)return endRun("🎉 PERFECT RUN");
+    if(idx>=questions.length) return endRun("🎉 PERFECT RUN");
     showQuestion();
    },400);
 
@@ -291,10 +293,11 @@ function answer(i,btn){
    statusEl.className="status bad";
    statusEl.textContent="❌ Wrong";
 
+   btn.classList.add("wrong");
+
    if(mode==="quickfire"){
-     highlightCorrect(q.correct_index,btn,q);
-   }else{
-     btn.classList.add("wrong");
+     document.querySelectorAll(".choice")[q.correct_index].classList.add("correct");
+     noteEl.textContent=`Correct answer: ${q.choices[q.correct_index]}`;
    }
 
    setTimeout(()=>endRun("❌ Run failed"),900);
@@ -305,19 +308,26 @@ function endRun(title){
  const pct=Math.round((correct/targetTotal)*100);
 
  show("end");
+
  endTitle.textContent=title;
  endPercent.textContent=`${pct}%`;
  endLine.textContent=`Score: ${correct} / ${targetTotal} (${pct}%)`;
  endPBLine.textContent=`Best: ${getPB()} / ${targetTotal}`;
- endTryAgain.textContent=pickTryAgainLine();
+
+ endTryAgain.textContent=pickTryAgainLine(correct,targetTotal);
+
+ /* ⭐ UI TWEAK: focus play again automatically */
+ setTimeout(()=>{
+   document.getElementById("btnPlayAgain").focus();
+ },100);
 }
 
-document.getElementById("btnQuickfire").onclick=()=>startRun("quickfire");
-document.getElementById("btnHardmode").onclick=()=>startRun("hardmode");
-document.getElementById("btnQuit").onclick=()=>show("home");
-document.getElementById("btnRestartRun").onclick=()=>startRun(mode);
-document.getElementById("btnPlayAgain").onclick=()=>startRun(mode);
-document.getElementById("btnEndHome").onclick=()=>show("home");
+btnQuickfire.onclick=()=>startRun("quickfire");
+btnHardmode.onclick=()=>startRun("hardmode");
+btnQuit.onclick=()=>show("home");
+btnRestartRun.onclick=()=>startRun(mode);
+btnPlayAgain.onclick=()=>startRun(mode);
+btnEndHome.onclick=()=>show("home");
 
 </script>
 </body>
