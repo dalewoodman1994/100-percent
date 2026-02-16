@@ -9,7 +9,7 @@
 :root{
   --bg:#0b0d12;
   --text:#f3f6ff;
-  --muted:rgba(243,246,255,.7);
+  --muted:rgba(243,246,255,.72);
   --border:rgba(243,246,255,.12);
   --accent:#7c5cff;
   --good:#2ee59d;
@@ -18,7 +18,9 @@
 body{
   margin:0;
   font-family:system-ui;
-  background:var(--bg);
+  background:radial-gradient(900px 500px at 20% -10%, rgba(124,92,255,.22), transparent 60%),
+             radial-gradient(800px 500px at 80% 0%, rgba(46,229,157,.12), transparent 55%),
+             var(--bg);
   color:var(--text);
 }
 .wrap{max-width:520px;margin:auto;padding:14px;}
@@ -31,23 +33,56 @@ body{
 .header{padding:16px;border-bottom:1px solid var(--border);}
 .content{padding:14px;}
 
+.brandRow{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+}
+.brandLeft{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.brandTitle{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+}
+.brandTitle h1{margin:0;font-size:22px;letter-spacing:.2px;}
+.brandTitle p{margin:0;color:var(--muted);font-size:13px;}
+
+.pill{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 10px;border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+  font-size:12px;
+  user-select:none;
+}
+.dot{
+  width:8px;height:8px;border-radius:999px;
+  background:var(--accent);
+  box-shadow:0 0 18px rgba(124,92,255,.55);
+}
+
 .btn{
   width:100%;
   padding:14px;
   border-radius:14px;
   border:1px solid var(--border);
-  background:rgba(255,255,255,.05);
+  background:rgba(255,255,255,.06);
   color:white;
-  font-weight:700;
+  font-weight:800;
   cursor:pointer;
 }
 .btnPrimary{background:rgba(124,92,255,.45);}
 .bigPlay{
   padding:18px!important;
   font-size:22px!important;
-  font-weight:900;
+  font-weight:1000;
 }
-
 .row{display:flex;gap:10px;margin-top:10px;}
 .row .btn{flex:1;}
 
@@ -58,22 +93,26 @@ body{
   border-radius:14px;
   overflow:hidden;
   border:1px solid var(--border);
+  background:rgba(0,0,0,.18);
 }
 #flag{width:100%;display:block;}
 
-.choices{
-  margin-top:10px;
+.hudRow{
   display:flex;
-  flex-direction:column;
+  justify-content:space-between;
   gap:10px;
+  flex-wrap:wrap;
+  align-items:flex-end;
 }
+.hudBlock{display:flex;flex-direction:column;gap:3px;}
+.hudMain{font-weight:1000;font-size:16px;}
+.hudSub{color:var(--muted);font-size:12px;}
+
+.choices{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
 .choice.correct{outline:2px solid var(--good);}
 .choice.wrong{outline:2px solid var(--bad);}
 
-.status{
-  margin-top:10px;
-  font-weight:800;
-}
+.status{margin-top:10px;font-weight:900;letter-spacing:.2px;}
 .status.good{color:var(--good);}
 .status.bad{color:var(--bad);}
 .status.neutral{color:var(--muted);}
@@ -93,259 +132,471 @@ body{
   color:var(--muted);
   margin-top:10px;
 }
-.divider{
-  height:1px;
-  background:var(--border);
-  margin:14px 0;
+.divider{height:1px;background:var(--border);margin:14px 0;}
+
+.miniBtn{
+  font-weight:800;
+  font-size:14px;
+  padding:12px;
+  border-radius:14px;
+  border:1px dashed var(--border);
+  background:rgba(255,255,255,.03);
+  color:var(--muted);
+}
+
+/* Celebration */
+.perfectGlow{
+  animation: glow 900ms ease-in-out infinite alternate;
+}
+@keyframes glow{
+  from{ text-shadow: 0 0 0 rgba(46,229,157,0); }
+  to{ text-shadow: 0 0 18px rgba(46,229,157,.35); }
+}
+
+.confetti{
+  position:relative;
+  height:0;
+}
+.confetti i{
+  position:absolute;
+  top:-6px;
+  width:8px;height:14px;border-radius:4px;
+  opacity:0;
+  animation: pop 900ms ease forwards;
+}
+@keyframes pop{
+  0%{ transform:translateY(0) rotate(0deg); opacity:0; }
+  15%{ opacity:1; }
+  100%{ transform:translateY(120px) rotate(240deg); opacity:0; }
+}
+
+/* Logo SVG sizing */
+.logo{
+  width:44px;height:44px;flex:0 0 auto;
+  filter: drop-shadow(0 10px 18px rgba(124,92,255,.18));
 }
 </style>
 </head>
 
 <body>
-
 <div class="wrap">
 
 <!-- HOME -->
 <section id="home" class="screen active">
-<div class="card">
-<div class="header">
-<h1>100 Percent</h1>
-<p style="color:var(--muted)">One mistake ends your run.</p>
-</div>
-<div class="content">
-<button id="btnQuickfire" class="btn btnPrimary">Quickfire (30)</button>
-<div class="row">
-<button id="btnHardmode" class="btn">Hardmode (195)</button>
-</div>
-</div>
-</div>
+  <div class="card">
+    <div class="header">
+      <div class="brandRow">
+        <div class="brandLeft">
+          <!-- Simple built-in logo (no file needed) -->
+          <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="g" x1="0" x2="1">
+                <stop offset="0" stop-color="#7c5cff" stop-opacity=".95"/>
+                <stop offset="1" stop-color="#2ee59d" stop-opacity=".80"/>
+              </linearGradient>
+            </defs>
+            <circle cx="32" cy="32" r="28" fill="rgba(255,255,255,.04)" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
+            <path d="M10 32c8-10 36-10 44 0" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
+            <path d="M10 32c8 10 36 10 44 0" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
+            <path d="M32 4c8 10 8 46 0 56" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
+            <text x="32" y="39" text-anchor="middle" font-size="18" font-weight="900" fill="url(#g)">100%</text>
+          </svg>
+
+          <div class="brandTitle">
+            <h1>100 Percent</h1>
+            <p>One mistake ends your run.</p>
+          </div>
+        </div>
+
+        <div class="pill"><span class="dot"></span><span>Flags</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <button id="btnQuickfire" class="btn btnPrimary">Quickfire (30)</button>
+      <div class="row">
+        <button id="btnHardmode" class="btn">Hardmode (195)</button>
+      </div>
+      <div class="note" style="margin-top:12px;">
+        Tip: Get 30/30 to join the 100% club 👑
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- PLAY -->
 <section id="play" class="screen">
-<div class="card">
-<div class="header">
-<div id="hudMode">Quickfire</div>
-<div id="hudProgress" style="color:var(--muted)">0 / 30</div>
-<div id="hudPB" style="color:var(--muted)">PB: 0 / 30</div>
-</div>
+  <div class="card">
+    <div class="header">
+      <div class="hudRow">
+        <div class="hudBlock">
+          <div id="hudMode" class="hudMain">Quickfire</div>
+          <div id="hudProgress" class="hudSub">0 / 30</div>
+          <div id="hudPB" class="hudSub">PB: 0 / 30</div>
+        </div>
+        <div class="hudBlock" style="text-align:right;">
+          <div class="hudMain">Time</div>
+          <div id="hudTime" class="hudSub">0:00.0</div>
+        </div>
+      </div>
+    </div>
 
-<div class="content">
-<div class="flagWrap">
-<img id="flag">
-</div>
+    <div class="content">
+      <div class="flagWrap"><img id="flag" alt="flag"></div>
+      <div class="choices" id="choices"></div>
+      <div id="status" class="status neutral"></div>
+      <div id="note" class="note"></div>
 
-<div class="choices" id="choices"></div>
-
-<div id="status" class="status neutral"></div>
-<div id="note" class="note"></div>
-
-<div class="row">
-<button id="btnQuit" class="btn">Home</button>
-<button id="btnRestartRun" class="btn">Restart</button>
-</div>
-
-</div>
-</div>
+      <div class="row">
+        <button id="btnQuit" class="btn">Home</button>
+        <button id="btnRestartRun" class="btn">Restart</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- END -->
 <section id="end" class="screen">
-<div class="card">
-<div class="header">
-<h2 id="endTitle">Run failed</h2>
-</div>
+  <div class="card">
+    <div class="header">
+      <h2 id="endTitle">Run failed</h2>
+    </div>
 
-<div class="content">
+    <div class="content">
+      <div id="confetti" class="confetti" aria-hidden="true"></div>
 
-<div class="resultBig" id="endPercent">0%</div>
-<div class="resultSub" id="endLine">Score: 0 / 30 (0%)</div>
-<div class="resultSub" id="endPBLine">Best: 0 / 30</div>
+      <div class="resultBig" id="endPercent">0%</div>
+      <div class="resultSub" id="endLine">Score: 0 / 30 (0%)</div>
+      <div class="resultSub" id="endPBLine">Best: 0 / 30</div>
+      <div class="resultSub" id="endTimeLine">Time: 0:00.0</div>
 
-<div class="note" id="endTryAgain"></div>
+      <div class="note" id="endTryAgain"></div>
 
-<div class="divider"></div>
+      <div class="divider"></div>
 
-<button id="btnPlayAgain" class="btn btnPrimary bigPlay">
-PLAY AGAIN
-</button>
+      <button id="btnPlayAgain" class="btn btnPrimary bigPlay">PLAY AGAIN</button>
 
-<div class="row">
-<button id="btnEndHome" class="btn">Home</button>
-</div>
-
-</div>
-</div>
+      <div class="row">
+        <button id="btnShare" class="btn miniBtn">Share / Copy</button>
+        <button id="btnEndHome" class="btn">Home</button>
+      </div>
+    </div>
+  </div>
 </section>
 
 </div>
 
 <script>
+/* ---------------- STATE ---------------- */
+let mode = "quickfire";
+let category = "flags";
+let targetTotal = 30;
+let questions = [];
+let idx = 0;
+let correct = 0;
+let locked = false;
+let streak = 0;
 
-let mode="quickfire";
-let category="flags";
-let targetTotal=30;
-let questions=[];
-let idx=0;
-let correct=0;
-let locked=false;
-let streak=0;
+/* timer */
+let runStartMs = 0;
+let runEndMs = 0;
+let timerHandle = null;
 
-/* ---- ELEMENTS ---- */
-const screens={
- home:document.getElementById("home"),
- play:document.getElementById("play"),
- end:document.getElementById("end")
+/* ---------------- ELEMENTS ---------------- */
+const screens = {
+  home: document.getElementById("home"),
+  play: document.getElementById("play"),
+  end: document.getElementById("end")
 };
 
-const flag=document.getElementById("flag");
-const choicesDiv=document.getElementById("choices");
-const statusEl=document.getElementById("status");
-const noteEl=document.getElementById("note");
+const flag = document.getElementById("flag");
+const choicesDiv = document.getElementById("choices");
+const statusEl = document.getElementById("status");
+const noteEl = document.getElementById("note");
 
-const hudMode=document.getElementById("hudMode");
-const hudProgress=document.getElementById("hudProgress");
-const hudPB=document.getElementById("hudPB");
+const hudMode = document.getElementById("hudMode");
+const hudProgress = document.getElementById("hudProgress");
+const hudPB = document.getElementById("hudPB");
+const hudTime = document.getElementById("hudTime");
 
-const endTitle=document.getElementById("endTitle");
-const endPercent=document.getElementById("endPercent");
-const endLine=document.getElementById("endLine");
-const endPBLine=document.getElementById("endPBLine");
-const endTryAgain=document.getElementById("endTryAgain");
+const endTitle = document.getElementById("endTitle");
+const endPercent = document.getElementById("endPercent");
+const endLine = document.getElementById("endLine");
+const endPBLine = document.getElementById("endPBLine");
+const endTimeLine = document.getElementById("endTimeLine");
+const endTryAgain = document.getElementById("endTryAgain");
+const confettiEl = document.getElementById("confetti");
 
-/* ---- HELPERS ---- */
-function show(s){
- Object.values(screens).forEach(x=>x.classList.remove("active"));
- screens[s].classList.add("active");
+/* buttons */
+const btnQuickfire = document.getElementById("btnQuickfire");
+const btnHardmode = document.getElementById("btnHardmode");
+const btnQuit = document.getElementById("btnQuit");
+const btnRestartRun = document.getElementById("btnRestartRun");
+const btnPlayAgain = document.getElementById("btnPlayAgain");
+const btnEndHome = document.getElementById("btnEndHome");
+const btnShare = document.getElementById("btnShare");
+
+/* ---------------- HELPERS ---------------- */
+function show(screenName){
+  Object.values(screens).forEach(x => x.classList.remove("active"));
+  screens[screenName].classList.add("active");
 }
 
 function pbKey(){ return `pb_${category}_${mode}`; }
-function getPB(){ return Number(localStorage.getItem(pbKey()))||0; }
-function setPB(v){ localStorage.setItem(pbKey(),v); }
+function getPB(){ return Number(localStorage.getItem(pbKey())) || 0; }
+function setPB(v){ localStorage.setItem(pbKey(), String(v)); }
 
 function renderHud(){
- hudMode.textContent = mode==="hardmode" ? "Hardmode":"Quickfire";
- hudProgress.textContent = `${correct} / ${targetTotal}`;
- hudPB.textContent = `PB: ${getPB()} / ${targetTotal}`;
+  hudMode.textContent = (mode === "hardmode") ? "Hardmode" : "Quickfire";
+  hudProgress.textContent = `${correct} / ${targetTotal}`;
+  hudPB.textContent = `PB: ${getPB()} / ${targetTotal}`;
+}
+
+function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+function formatMs(ms){
+  ms = Math.max(0, ms);
+  const totalSeconds = ms / 1000;
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds - minutes * 60;
+  const secInt = Math.floor(seconds);
+  const tenths = Math.floor((seconds - secInt) * 10);
+  return `${minutes}:${String(secInt).padStart(2,"0")}.${tenths}`;
+}
+
+function startTimer(){
+  stopTimer();
+  runStartMs = Date.now();
+  runEndMs = 0;
+  hudTime.textContent = "0:00.0";
+  timerHandle = setInterval(() => {
+    hudTime.textContent = formatMs(Date.now() - runStartMs);
+  }, 100);
+}
+
+function stopTimer(){
+  if (timerHandle) clearInterval(timerHandle);
+  timerHandle = null;
+}
+
+function finalizeTimer(){
+  runEndMs = Date.now();
+  stopTimer();
+  return runEndMs - runStartMs;
 }
 
 /* ---- NEAR MISS PSYCHOLOGY ---- */
 function pickTryAgainLine(score,total){
- const pct=Math.round((score/total)*100);
- if(score>=total-1) return "ONE away from 100% 😱 run it back!";
- if(pct>=80) return "You were SO close… next run is it 🔥";
- if(pct>=60) return "You're getting sharp 👀 go again!";
- if(pct>=40) return "Nice progress — keep pushing 💪";
- return "Warm-up round 😄 try again!";
+  const pct = Math.round((score/total) * 100);
+  if(score >= total - 1) return "ONE away from 100% 😱 run it back!";
+  if(pct >= 80) return "You were SO close… next run is it 🔥";
+  if(pct >= 60) return "You're getting sharp 👀 go again!";
+  if(pct >= 40) return "Nice progress — keep pushing 💪";
+  return "Warm-up round 😄 try again!";
 }
 
-/* ---- GAME FLOW ---- */
-async function startRun(m){
- mode=m;
- correct=0;
- idx=0;
- streak=0;
- show("play");
+/* ---- Celebration confetti (simple, lightweight) ---- */
+function burstConfetti(){
+  confettiEl.innerHTML = "";
+  const pieces = 18;
+  for(let i=0;i<pieces;i++){
+    const p = document.createElement("i");
+    const left = Math.random()*100; // %
+    const delay = Math.random()*120; // ms
+    const dur = 700 + Math.random()*500;
+    const rot = Math.floor(Math.random()*280);
+    const top = -8 - Math.random()*18;
 
- const res=await fetch(`/api/questionset?mode=${mode}&category=${category}`,{cache:"no-store"});
- const data=await res.json();
+    p.style.left = left + "%";
+    p.style.top = top + "px";
+    p.style.animationDelay = delay + "ms";
+    p.style.animationDuration = dur + "ms";
+    p.style.transform = `rotate(${rot}deg)`;
 
- questions=data.questions;
- targetTotal=data.totalPlanned;
+    // use accent/good/bad palette without hardcoding too much
+    const pick = Math.random();
+    p.style.background = pick < 0.5 ? "rgba(124,92,255,.95)" : "rgba(46,229,157,.90)";
+    confettiEl.appendChild(p);
+  }
+}
 
- renderHud();
- showQuestion();
+/* ---------------- GAME FLOW ---------------- */
+async function startRun(newMode){
+  mode = newMode;
+  correct = 0;
+  idx = 0;
+  streak = 0;
+  locked = false;
+
+  show("play");
+  renderHud();
+  noteEl.textContent = "";
+  statusEl.textContent = "Loading...";
+  statusEl.className = "status neutral";
+
+  // start timer now (counts load time slightly; keeps it simple and fair enough for now)
+  startTimer();
+
+  const res = await fetch(`/api/questionset?mode=${mode}&category=${category}`, { cache: "no-store" });
+  const data = await res.json();
+
+  if (data.error){
+    stopTimer();
+    statusEl.className = "status bad";
+    statusEl.textContent = "Error: " + data.error;
+    return;
+  }
+
+  questions = data.questions || [];
+  targetTotal = data.totalPlanned || 30;
+
+  renderHud();
+  showQuestion();
 }
 
 function showQuestion(){
- statusEl.textContent="";
- noteEl.textContent="";
- locked=false;
- renderHud();
+  statusEl.textContent = "";
+  statusEl.className = "status neutral";
+  noteEl.textContent = "";
+  locked = false;
+  renderHud();
 
- const q=questions[idx];
- flag.src=q.image_url;
+  const q = questions[idx];
+  if(!q){
+    return endRun("Run ended");
+  }
 
- choicesDiv.innerHTML="";
- q.choices.forEach((txt,i)=>{
-   const b=document.createElement("button");
-   b.className="btn choice";
-   b.textContent=txt;
-   b.onclick=()=>answer(i,b);
-   choicesDiv.appendChild(b);
- });
+  flag.src = q.image_url;
+
+  choicesDiv.innerHTML = "";
+  q.choices.forEach((txt, i) => {
+    const b = document.createElement("button");
+    b.className = "btn choice";
+    b.textContent = txt;
+    b.onclick = () => answer(i, b);
+    choicesDiv.appendChild(b);
+  });
 }
 
-function answer(i,btn){
- if(locked)return;
- locked=true;
+function answer(i, btn){
+  if(locked) return;
+  locked = true;
 
- const q=questions[idx];
- [...document.querySelectorAll(".choice")].forEach(b=>b.disabled=true);
+  const q = questions[idx];
+  const allBtns = [...document.querySelectorAll(".choice")];
+  allBtns.forEach(b => b.disabled = true);
 
- if(i===q.correct_index){
+  if(i === q.correct_index){
+    btn.classList.add("correct");
 
-   btn.classList.add("correct");
-   correct++;
-   streak++;
+    correct++;
+    streak++;
 
-   if(correct>getPB()) setPB(correct);
+    if(correct > getPB()) setPB(correct);
 
-   statusEl.className="status good";
+    statusEl.className = "status good";
+    statusEl.textContent = (streak >= 3) ? `🔥 ${streak} streak` : "✅ Correct";
 
-   // ⭐ dopamine streak message
-   if(streak>=3){
-     statusEl.textContent=`🔥 ${streak} streak`;
-   }else{
-     statusEl.textContent="✅ Correct";
-   }
+    renderHud();
 
-   setTimeout(()=>{
-     idx++;
-     if(idx>=questions.length) return endRun("🎉 PERFECT RUN");
-     showQuestion();
-   },400);
+    setTimeout(() => {
+      idx++;
+      if(idx >= questions.length){
+        return endRun("🎉 PERFECT RUN");
+      }
+      showQuestion();
+    }, 380);
 
- }else{
+  } else {
+    streak = 0;
 
-   streak=0;
+    statusEl.className = "status bad";
+    statusEl.textContent = "❌ Wrong";
+    btn.classList.add("wrong");
 
-   statusEl.className="status bad";
-   statusEl.textContent="❌ Wrong";
-   btn.classList.add("wrong");
+    // Quickfire: show correct answer (learning + fairness)
+    if(mode === "quickfire"){
+      const correctBtn = allBtns[q.correct_index];
+      if(correctBtn) correctBtn.classList.add("correct");
+      noteEl.textContent = `Correct answer: ${q.choices[q.correct_index]}`;
+    }
 
-   if(mode==="quickfire"){
-     document.querySelectorAll(".choice")[q.correct_index].classList.add("correct");
-     noteEl.textContent=`Correct answer: ${q.choices[q.correct_index]}`;
-   }
-
-   setTimeout(()=>endRun("❌ Run failed"),900);
- }
+    setTimeout(() => endRun("❌ Run failed"), 850);
+  }
 }
 
 function endRun(title){
- const pct=Math.round((correct/targetTotal)*100);
+  const elapsedMs = finalizeTimer();
+  const pct = clamp(Math.round((correct / targetTotal) * 100), 0, 100);
 
- show("end");
+  show("end");
 
- endTitle.textContent=title;
- endPercent.textContent=`${pct}%`;
- endLine.textContent=`Score: ${correct} / ${targetTotal} (${pct}%)`;
- endPBLine.textContent=`Best: ${getPB()} / ${targetTotal}`;
- endTryAgain.textContent=pickTryAgainLine(correct,targetTotal);
+  const perfect = (correct === targetTotal);
 
- setTimeout(()=>document.getElementById("btnPlayAgain").focus(),100);
+  // Big moment for 30/30
+  if(perfect){
+    endTitle.textContent = "🏆 100% PERFECT!";
+    endPercent.classList.add("perfectGlow");
+    burstConfetti();
+    endTryAgain.textContent = "That’s elite. Screenshot it 😄";
+  } else {
+    endTitle.textContent = title;
+    endPercent.classList.remove("perfectGlow");
+    confettiEl.innerHTML = "";
+    endTryAgain.textContent = pickTryAgainLine(correct, targetTotal);
+  }
+
+  endPercent.textContent = `${pct}%`;
+  endLine.textContent = `Score: ${correct} / ${targetTotal} (${pct}%)`;
+  endPBLine.textContent = `Best: ${getPB()} / ${targetTotal}`;
+  endTimeLine.textContent = `Time: ${formatMs(elapsedMs)}`;
+
+  // UI tweak: focus Play Again automatically
+  setTimeout(() => btnPlayAgain.focus(), 80);
 }
 
-/* ---- BUTTONS ---- */
-btnQuickfire.onclick=()=>startRun("quickfire");
-btnHardmode.onclick=()=>startRun("hardmode");
-btnQuit.onclick=()=>show("home");
-btnRestartRun.onclick=()=>startRun(mode);
-btnPlayAgain.onclick=()=>startRun(mode);
-btnEndHome.onclick=()=>show("home");
+/* ---------------- SHARE ---------------- */
+function buildShareText(){
+  const pct = clamp(Math.round((correct / targetTotal) * 100), 0, 100);
+  const url = window.location.origin;
+  const modeLabel = (mode === "hardmode") ? "Hardmode" : "Quickfire";
+  return `I scored ${pct}% on 100 Percent (Flags ${modeLabel}). Can you beat me? ${url}`;
+}
 
+async function shareScore(){
+  const text = buildShareText();
+
+  // Native share (best on mobile)
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: "100 Percent", text });
+      btnShare.textContent = "Shared ✅";
+      setTimeout(() => btnShare.textContent = "Share / Copy", 1200);
+      return;
+    } catch (e) {
+      // fall through to clipboard
+    }
+  }
+
+  // Clipboard copy fallback
+  try {
+    await navigator.clipboard.writeText(text);
+    btnShare.textContent = "Copied ✅";
+    setTimeout(() => btnShare.textContent = "Share / Copy", 1200);
+  } catch (e) {
+    // last fallback: prompt
+    window.prompt("Copy this:", text);
+  }
+}
+
+/* ---------------- BUTTONS ---------------- */
+btnQuickfire.onclick = () => startRun("quickfire");
+btnHardmode.onclick = () => startRun("hardmode");
+btnQuit.onclick = () => { stopTimer(); show("home"); };
+btnRestartRun.onclick = () => startRun(mode);
+btnPlayAgain.onclick = () => startRun(mode);
+btnEndHome.onclick = () => show("home");
+btnShare.onclick = () => shareScore();
 </script>
-
 </body>
 </html>
