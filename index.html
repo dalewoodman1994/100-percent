@@ -42,7 +42,7 @@ body{
 .brandLeft{
   display:flex;
   align-items:center;
-  gap:10px;
+  gap:12px;
 }
 .brandTitle{
   display:flex;
@@ -74,15 +74,26 @@ body{
   border:1px solid var(--border);
   background:rgba(255,255,255,.06);
   color:white;
-  font-weight:800;
+  font-weight:900;
   cursor:pointer;
 }
 .btnPrimary{background:rgba(124,92,255,.45);}
+
 .bigPlay{
   padding:18px!important;
   font-size:22px!important;
   font-weight:1000;
 }
+
+.bigQuickfire{
+  padding:22px !important;
+  font-size:22px !important;
+  font-weight:1000 !important;
+  letter-spacing:.2px;
+  border-color: rgba(124,92,255,.35);
+  box-shadow: 0 12px 28px rgba(124,92,255,.18);
+}
+
 .row{display:flex;gap:10px;margin-top:10px;}
 .row .btn{flex:1;}
 
@@ -135,7 +146,7 @@ body{
 .divider{height:1px;background:var(--border);margin:14px 0;}
 
 .miniBtn{
-  font-weight:800;
+  font-weight:900;
   font-size:14px;
   padding:12px;
   border-radius:14px;
@@ -153,10 +164,7 @@ body{
   to{ text-shadow: 0 0 18px rgba(46,229,157,.35); }
 }
 
-.confetti{
-  position:relative;
-  height:0;
-}
+.confetti{position:relative;height:0;}
 .confetti i{
   position:absolute;
   top:-6px;
@@ -170,10 +178,12 @@ body{
   100%{ transform:translateY(120px) rotate(240deg); opacity:0; }
 }
 
-/* Logo SVG sizing */
+/* Logo sizing */
 .logo{
-  width:44px;height:44px;flex:0 0 auto;
-  filter: drop-shadow(0 10px 18px rgba(124,92,255,.18));
+  width:58px;
+  height:58px;
+  flex:0 0 auto;
+  filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
 </style>
 </head>
@@ -187,19 +197,65 @@ body{
     <div class="header">
       <div class="brandRow">
         <div class="brandLeft">
-          <!-- Simple built-in logo (no file needed) -->
-          <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+
+          <!-- NEW LOGO: 100% in globe with flames (inline SVG, no files needed) -->
+          <svg class="logo" viewBox="0 0 96 96" aria-hidden="true">
             <defs>
-              <linearGradient id="g" x1="0" x2="1">
-                <stop offset="0" stop-color="#7c5cff" stop-opacity=".95"/>
-                <stop offset="1" stop-color="#2ee59d" stop-opacity=".80"/>
+              <linearGradient id="gradText" x1="0" x2="1">
+                <stop offset="0" stop-color="#7c5cff" stop-opacity="0.98"/>
+                <stop offset="1" stop-color="#2ee59d" stop-opacity="0.92"/>
               </linearGradient>
+              <linearGradient id="gradFlame" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0" stop-color="#ffcc66" stop-opacity="0.95"/>
+                <stop offset="0.55" stop-color="#ff6b6b" stop-opacity="0.92"/>
+                <stop offset="1" stop-color="#7c5cff" stop-opacity="0.70"/>
+              </linearGradient>
+              <radialGradient id="glow" cx="50%" cy="45%" r="60%">
+                <stop offset="0" stop-color="rgba(124,92,255,0.55)"/>
+                <stop offset="1" stop-color="rgba(124,92,255,0.0)"/>
+              </radialGradient>
             </defs>
-            <circle cx="32" cy="32" r="28" fill="rgba(255,255,255,.04)" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
-            <path d="M10 32c8-10 36-10 44 0" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
-            <path d="M10 32c8 10 36 10 44 0" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
-            <path d="M32 4c8 10 8 46 0 56" fill="none" stroke="rgba(243,246,255,.18)" stroke-width="2"/>
-            <text x="32" y="39" text-anchor="middle" font-size="18" font-weight="900" fill="url(#g)">100%</text>
+
+            <!-- outer glow -->
+            <circle cx="48" cy="48" r="42" fill="url(#glow)"/>
+
+            <!-- flames around edge -->
+            <g fill="url(#gradFlame)" opacity="0.95">
+              <!-- top flames -->
+              <path d="M48 3c3 6 2 10-1 14c-3-4-4-8 1-14z"/>
+              <path d="M33 6c2 6 0 10-4 13c-2-4-2-8 4-13z"/>
+              <path d="M63 6c6 5 6 9 4 13c-4-3-6-7-4-13z"/>
+              <path d="M18 14c1 6-2 10-7 12c-1-5 1-9 7-12z"/>
+              <path d="M78 14c6 3 8 7 7 12c-5-2-8-6-7-12z"/>
+
+              <!-- side flames -->
+              <path d="M6 38c6 2 9 6 9 11c-5-1-9-5-9-11z"/>
+              <path d="M90 38c0 6-4 10-9 11c0-5 3-9 9-11z"/>
+
+              <!-- bottom small embers -->
+              <path d="M24 84c5-1 9 1 11 6c-6 1-10-1-11-6z"/>
+              <path d="M72 84c-1 5-5 7-11 6c2-5 6-7 11-6z"/>
+            </g>
+
+            <!-- globe -->
+            <circle cx="48" cy="48" r="30" fill="rgba(255,255,255,0.04)" stroke="rgba(243,246,255,0.20)" stroke-width="2"/>
+
+            <!-- globe grid -->
+            <g fill="none" stroke="rgba(243,246,255,0.18)" stroke-width="2">
+              <path d="M18 48c10-12 50-12 60 0"/>
+              <path d="M18 48c10 12 50 12 60 0"/>
+              <path d="M48 18c10 12 10 48 0 60"/>
+              <path d="M48 18c-10 12-10 48 0 60"/>
+              <path d="M22 36c9 6 43 6 52 0"/>
+              <path d="M22 60c9-6 43-6 52 0"/>
+            </g>
+
+            <!-- 100% text -->
+            <text x="48" y="54" text-anchor="middle"
+                  font-size="20" font-weight="1000"
+                  fill="url(#gradText)" style="letter-spacing:0.5px;">
+              100%
+            </text>
           </svg>
 
           <div class="brandTitle">
@@ -213,12 +269,15 @@ body{
     </div>
 
     <div class="content">
-      <button id="btnQuickfire" class="btn btnPrimary">Quickfire (30)</button>
+      <!-- BIGGER Quickfire -->
+      <button id="btnQuickfire" class="btn btnPrimary bigQuickfire">⚡ Quickfire (30)</button>
+
       <div class="row">
         <button id="btnHardmode" class="btn">Hardmode (195)</button>
       </div>
+
       <div class="note" style="margin-top:12px;">
-        Tip: Get 30/30 to join the 100% club 👑
+        Tip: Hit <b>30/30</b> to join the <b>100% club</b> 👑
       </div>
     </div>
   </div>
@@ -395,14 +454,14 @@ function pickTryAgainLine(score,total){
   return "Warm-up round 😄 try again!";
 }
 
-/* ---- Celebration confetti (simple, lightweight) ---- */
+/* ---- Celebration confetti ---- */
 function burstConfetti(){
   confettiEl.innerHTML = "";
   const pieces = 18;
   for(let i=0;i<pieces;i++){
     const p = document.createElement("i");
-    const left = Math.random()*100; // %
-    const delay = Math.random()*120; // ms
+    const left = Math.random()*100;
+    const delay = Math.random()*120;
     const dur = 700 + Math.random()*500;
     const rot = Math.floor(Math.random()*280);
     const top = -8 - Math.random()*18;
@@ -413,9 +472,10 @@ function burstConfetti(){
     p.style.animationDuration = dur + "ms";
     p.style.transform = `rotate(${rot}deg)`;
 
-    // use accent/good/bad palette without hardcoding too much
-    const pick = Math.random();
-    p.style.background = pick < 0.5 ? "rgba(124,92,255,.95)" : "rgba(46,229,157,.90)";
+    p.style.background = (Math.random() < 0.5)
+      ? "rgba(124,92,255,.95)"
+      : "rgba(46,229,157,.90)";
+
     confettiEl.appendChild(p);
   }
 }
@@ -434,7 +494,6 @@ async function startRun(newMode){
   statusEl.textContent = "Loading...";
   statusEl.className = "status neutral";
 
-  // start timer now (counts load time slightly; keeps it simple and fair enough for now)
   startTimer();
 
   const res = await fetch(`/api/questionset?mode=${mode}&category=${category}`, { cache: "no-store" });
@@ -462,9 +521,7 @@ function showQuestion(){
   renderHud();
 
   const q = questions[idx];
-  if(!q){
-    return endRun("Run ended");
-  }
+  if(!q) return endRun("Run ended");
 
   flag.src = q.image_url;
 
@@ -514,7 +571,6 @@ function answer(i, btn){
     statusEl.textContent = "❌ Wrong";
     btn.classList.add("wrong");
 
-    // Quickfire: show correct answer (learning + fairness)
     if(mode === "quickfire"){
       const correctBtn = allBtns[q.correct_index];
       if(correctBtn) correctBtn.classList.add("correct");
@@ -533,7 +589,6 @@ function endRun(title){
 
   const perfect = (correct === targetTotal);
 
-  // Big moment for 30/30
   if(perfect){
     endTitle.textContent = "🏆 100% PERFECT!";
     endPercent.classList.add("perfectGlow");
@@ -551,7 +606,6 @@ function endRun(title){
   endPBLine.textContent = `Best: ${getPB()} / ${targetTotal}`;
   endTimeLine.textContent = `Time: ${formatMs(elapsedMs)}`;
 
-  // UI tweak: focus Play Again automatically
   setTimeout(() => btnPlayAgain.focus(), 80);
 }
 
@@ -566,25 +620,20 @@ function buildShareText(){
 async function shareScore(){
   const text = buildShareText();
 
-  // Native share (best on mobile)
   if (navigator.share) {
     try {
       await navigator.share({ title: "100 Percent", text });
       btnShare.textContent = "Shared ✅";
       setTimeout(() => btnShare.textContent = "Share / Copy", 1200);
       return;
-    } catch (e) {
-      // fall through to clipboard
-    }
+    } catch (e) {}
   }
 
-  // Clipboard copy fallback
   try {
     await navigator.clipboard.writeText(text);
     btnShare.textContent = "Copied ✅";
     setTimeout(() => btnShare.textContent = "Share / Copy", 1200);
   } catch (e) {
-    // last fallback: prompt
     window.prompt("Copy this:", text);
   }
 }
