@@ -25,8 +25,9 @@ body{
   color:var(--text);
 }
 
+/* revert overall sizing to original so play screen fits without scroll */
 .wrap{
-  max-width:560px;
+  max-width:520px;
   margin:auto;
   padding:14px;
 }
@@ -35,7 +36,7 @@ body{
 .screen{ display:none; }
 .screen.active{ display:block; }
 
-/* Home ONLY: fills viewport & centers card, without affecting play/end */
+/* Home ONLY: fill viewport & center */
 #home.active{
   min-height:100vh;
   display:flex;
@@ -45,35 +46,35 @@ body{
 .card{
   width:100%;
   border:1px solid var(--border);
-  border-radius:18px;
-  background:rgba(255,255,255,.035);
+  border-radius:16px;
+  background:rgba(255,255,255,.03);
   overflow:hidden;
 }
-.header{padding:20px;border-bottom:1px solid var(--border);}
-.content{padding:18px;}
+.header{padding:16px;border-bottom:1px solid var(--border);}
+.content{padding:14px;}
 
 .brandRow{
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap:12px;
+  gap:10px;
 }
 .brandLeft{
   display:flex;
   align-items:center;
-  gap:14px;
+  gap:12px;
 }
 .brandTitle{
   display:flex;
   flex-direction:column;
-  gap:6px;
+  gap:4px;
 }
-.brandTitle h1{margin:0;font-size:28px;letter-spacing:.2px;}
-.brandTitle p{margin:0;color:var(--muted);font-size:14px;}
+.brandTitle h1{margin:0;font-size:22px;letter-spacing:.2px;}
+.brandTitle p{margin:0;color:var(--muted);font-size:13px;}
 
 .pill{
   display:inline-flex;align-items:center;gap:8px;
-  padding:9px 12px;border-radius:999px;
+  padding:8px 10px;border-radius:999px;
   border:1px solid var(--border);
   background:rgba(255,255,255,.03);
   color:var(--muted);
@@ -81,42 +82,44 @@ body{
   user-select:none;
 }
 .dot{
-  width:9px;height:9px;border-radius:999px;
+  width:8px;height:8px;border-radius:999px;
   background:var(--accent);
   box-shadow:0 0 18px rgba(124,92,255,.55);
 }
 
 .btn{
   width:100%;
-  padding:15px;
-  border-radius:16px;
+  padding:14px;              /* reverted */
+  border-radius:14px;         /* reverted */
   border:1px solid var(--border);
   background:rgba(255,255,255,.06);
   color:white;
-  font-weight:900;
+  font-weight:800;            /* reverted */
   cursor:pointer;
 }
 .btnPrimary{background:rgba(124,92,255,.45);}
 
 .bigPlay{
-  padding:20px!important;
+  padding:18px!important;     /* reverted */
   font-size:22px!important;
-  font-weight:1000;
-}
-.bigQuickfire{
-  padding:24px!important;
-  font-size:24px!important;
-  font-weight:1000!important;
-  letter-spacing:.2px;
-  border-color: rgba(124,92,255,.35);
-  box-shadow: 0 14px 30px rgba(124,92,255,.20);
+  font-weight:900;
 }
 
-.row{display:flex;gap:12px;margin-top:12px;}
+/* keep quickfire bigger than hardmode, but not huge */
+.bigQuickfire{
+  padding:18px!important;
+  font-size:20px!important;
+  font-weight:900!important;
+  letter-spacing:.2px;
+  border-color: rgba(124,92,255,.35);
+  box-shadow: 0 12px 24px rgba(124,92,255,.16);
+}
+
+.row{display:flex;gap:10px;margin-top:10px;}
 .row .btn{flex:1;}
 
 .flagWrap{
-  border-radius:16px;
+  border-radius:14px;
   overflow:hidden;
   border:1px solid var(--border);
   background:rgba(0,0,0,.18);
@@ -126,15 +129,15 @@ body{
 .hudRow{
   display:flex;
   justify-content:space-between;
-  gap:12px;
+  gap:10px;
   flex-wrap:wrap;
   align-items:flex-end;
 }
-.hudBlock{display:flex;flex-direction:column;gap:4px;}
+.hudBlock{display:flex;flex-direction:column;gap:3px;}
 .hudMain{font-weight:1000;font-size:16px;}
 .hudSub{color:var(--muted);font-size:12px;}
 
-.choices{margin-top:12px;display:flex;flex-direction:column;gap:10px;}
+.choices{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
 .choice.correct{outline:2px solid var(--good);}
 .choice.wrong{outline:2px solid var(--bad);}
 
@@ -144,29 +147,29 @@ body{
 .status.neutral{color:var(--muted);}
 
 .resultBig{
-  font-size:44px;
+  font-size:42px;            /* reverted */
   font-weight:1000;
   text-align:center;
 }
 .resultSub{
   text-align:center;
   color:var(--muted);
-  margin-top:7px;
-  font-size:15px;
+  margin-top:6px;
+  font-size:14px;
 }
 .note{
   text-align:center;
   color:var(--muted);
-  margin-top:12px;
+  margin-top:10px;
   font-size:14px;
 }
-.divider{height:1px;background:var(--border);margin:16px 0;}
+.divider{height:1px;background:var(--border);margin:14px 0;}
 
 .miniBtn{
-  font-weight:900;
+  font-weight:800;
   font-size:14px;
   padding:12px;
-  border-radius:16px;
+  border-radius:14px;
   border:1px dashed var(--border);
   background:rgba(255,255,255,.03);
   color:var(--muted);
@@ -195,24 +198,25 @@ body{
   100%{ transform:translateY(120px) rotate(240deg); opacity:0; }
 }
 
-/* Logo sizing */
+/* Logo sizing (reverted smaller) */
 .logo{
-  width:76px;
-  height:76px;
+  width:58px;
+  height:58px;
   flex:0 0 auto;
   filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
 }
+
 .footerThanks{
-  margin-top:14px;
+  margin-top:12px;
   text-align:center;
   color:rgba(243,246,255,.55);
   font-size:12px;
 }
 
 @media (max-width: 420px){
-  .brandTitle h1{ font-size:26px; }
-  .logo{ width:70px; height:70px; }
-  .bigQuickfire{ font-size:22px!important; }
+  .brandTitle h1{ font-size:21px; }
+  .logo{ width:54px; height:54px; }
+  .bigQuickfire{ font-size:19px!important; }
 }
 </style>
 </head>
@@ -363,7 +367,6 @@ body{
 </div>
 
 <script>
-/* ---------------- STATE ---------------- */
 let mode="quickfire";
 let category="flags";
 let targetTotal=30;
@@ -373,12 +376,10 @@ let correct=0;
 let locked=false;
 let streak=0;
 
-/* timer */
 let runStartMs=0;
 let runEndMs=0;
 let timerHandle=null;
 
-/* ---------------- ELEMENTS ---------------- */
 const screens={
   home:document.getElementById("home"),
   play:document.getElementById("play"),
@@ -405,7 +406,6 @@ const endBestTimeLine=document.getElementById("endBestTimeLine");
 const endTryAgain=document.getElementById("endTryAgain");
 const confettiEl=document.getElementById("confetti");
 
-/* buttons */
 const btnQuickfire=document.getElementById("btnQuickfire");
 const btnHardmode=document.getElementById("btnHardmode");
 const btnQuit=document.getElementById("btnQuit");
@@ -414,11 +414,10 @@ const btnPlayAgain=document.getElementById("btnPlayAgain");
 const btnEndHome=document.getElementById("btnEndHome");
 const btnShare=document.getElementById("btnShare");
 
-/* ---------------- HELPERS ---------------- */
 function show(screenName){
   Object.values(screens).forEach(x=>x.classList.remove("active"));
   screens[screenName].classList.add("active");
-  window.scrollTo(0,0); // ensures no weird scroll position ever
+  window.scrollTo(0,0);
 }
 
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
@@ -427,15 +426,12 @@ function pbKey(){ return `pb_${category}_${mode}`; }
 function getPB(){ return Number(localStorage.getItem(pbKey())) || 0; }
 function setPB(v){ localStorage.setItem(pbKey(), String(v)); }
 
-/* Best time ONLY for perfect runs */
 function bestTimeKey(){ return `bestTimePerfect_${category}_${mode}`; }
 function getBestTimeMs(){
   const v=Number(localStorage.getItem(bestTimeKey()));
   return Number.isFinite(v) && v>0 ? v : null;
 }
-function setBestTimeMs(ms){
-  localStorage.setItem(bestTimeKey(), String(ms));
-}
+function setBestTimeMs(ms){ localStorage.setItem(bestTimeKey(), String(ms)); }
 
 function formatMs(ms){
   ms=Math.max(0,ms);
@@ -460,23 +456,11 @@ function startTimer(){
   runStartMs=Date.now();
   runEndMs=0;
   hudTime.textContent="0:00.0";
-  timerHandle=setInterval(()=>{
-    hudTime.textContent=formatMs(Date.now()-runStartMs);
-  },100);
+  timerHandle=setInterval(()=>{ hudTime.textContent=formatMs(Date.now()-runStartMs); },100);
 }
+function stopTimer(){ if(timerHandle) clearInterval(timerHandle); timerHandle=null; }
+function finalizeTimer(){ runEndMs=Date.now(); stopTimer(); return runEndMs-runStartMs; }
 
-function stopTimer(){
-  if(timerHandle) clearInterval(timerHandle);
-  timerHandle=null;
-}
-
-function finalizeTimer(){
-  runEndMs=Date.now();
-  stopTimer();
-  return runEndMs-runStartMs;
-}
-
-/* Near-miss messages */
 function pickTryAgainLine(score,total){
   const pct=Math.round((score/total)*100);
   if(score>=total-1) return "ONE away from 100% 😱 run it back!";
@@ -486,7 +470,6 @@ function pickTryAgainLine(score,total){
   return "Warm-up round 😄 try again!";
 }
 
-/* Confetti */
 function burstConfetti(){
   confettiEl.innerHTML="";
   const pieces=18;
@@ -502,7 +485,6 @@ function burstConfetti(){
   }
 }
 
-/* ---------------- GAME FLOW ---------------- */
 async function startRun(newMode){
   mode=newMode;
   correct=0;
@@ -605,7 +587,6 @@ function endRun(title){
   const pct=clamp(Math.round((correct/targetTotal)*100),0,100);
   const perfect=(correct===targetTotal);
 
-  // Save best time ONLY when perfect, and only if faster
   if(perfect){
     const currentBest=getBestTimeMs();
     if(!currentBest || elapsedMs<currentBest){
@@ -638,7 +619,6 @@ function endRun(title){
   setTimeout(()=>btnPlayAgain.focus(),80);
 }
 
-/* ---------------- SHARE ---------------- */
 function buildShareText(){
   const pct=clamp(Math.round((correct/targetTotal)*100),0,100);
   const url=window.location.origin;
@@ -667,7 +647,6 @@ async function shareScore(){
   }
 }
 
-/* ---------------- BUTTONS ---------------- */
 btnQuickfire.onclick=()=>startRun("quickfire");
 btnHardmode.onclick=()=>startRun("hardmode");
 btnQuit.onclick=()=>{ stopTimer(); show("home"); };
