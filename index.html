@@ -6,126 +6,231 @@
 <title>100 Percent</title>
 
 <style>
+/* =========================================================
+   UI/BRANDING (VISUAL ONLY)
+   Fixes:
+   1) Flag bigger + uniform
+   2) Answers not all-caps
+   3) Brighter / more energy with electric blue accents
+   ========================================================= */
 :root{
-  --bg:#0b0d12;
-  --text:#f3f6ff;
-  --muted:rgba(243,246,255,.72);
-  --border:rgba(243,246,255,.12);
-  --accent:#7c5cff;
+  /* Base */
+  --bg:#141414;
+  --panel:#1b1b1b;              /* slightly brighter than before */
+  --panel2:#212121;             /* brighter surface layer */
+  --panel3:#262626;             /* used for emphasized zones */
+  --border:rgba(255,255,255,.11);
+
+  /* Text */
+  --text:#f7f8fb;
+  --muted:rgba(247,248,251,.74);
+
+  /* Accent */
+  --blue:#2f80ff;
+  --blue2:#1b5cff;
+  --blueGlow:rgba(47,128,255,.25);
+
+  /* Status */
   --good:#2ee59d;
   --bad:#ff4d6d;
+
+  /* Motion */
+  --t:170ms;
+  --ease:cubic-bezier(.2,.9,.2,1);
 }
+
+*{ box-sizing:border-box; }
+html,body{ height:100%; }
 
 body{
   margin:0;
-  font-family:system-ui;
-  background:radial-gradient(900px 500px at 20% -10%, rgba(124,92,255,.22), transparent 60%),
-             radial-gradient(800px 500px at 80% 0%, rgba(46,229,157,.12), transparent 55%),
-             var(--bg);
+  font-family: ui-sans-serif, system-ui, -apple-system, "Inter", "Segoe UI", Roboto, Arial, sans-serif;
   color:var(--text);
+
+  /* Brighter energy without childish gradients */
+  background:
+    radial-gradient(900px 520px at 18% -12%, rgba(47,128,255,.22), transparent 62%),
+    radial-gradient(780px 560px at 86% 8%, rgba(255,255,255,.05), transparent 55%),
+    radial-gradient(720px 520px at 82% 0%, rgba(46,229,157,.08), transparent 58%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,0)),
+    var(--bg);
 }
 
-/* revert overall sizing to original so play screen fits without scroll */
 .wrap{
-  max-width:520px;
+  max-width:560px;
   margin:auto;
   padding:14px;
 }
 
-/* screens */
 .screen{ display:none; }
 .screen.active{ display:block; }
 
-/* Home ONLY: fill viewport & center */
+/* Home centered only */
 #home.active{
   min-height:100vh;
   display:flex;
   align-items:center;
 }
 
+/* Panels */
 .card{
   width:100%;
   border:1px solid var(--border);
-  border-radius:16px;
-  background:rgba(255,255,255,.03);
+  border-radius:18px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   overflow:hidden;
+  box-shadow: 0 22px 60px rgba(0,0,0,.38);
 }
-.header{padding:16px;border-bottom:1px solid var(--border);}
-.content{padding:14px;}
 
-.brandRow{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
+.header{
+  padding:16px 16px 14px;
+  border-bottom:1px solid var(--border);
+  background:
+    linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.08));
+  backdrop-filter: blur(6px);
 }
-.brandLeft{
-  display:flex;
-  align-items:center;
-  gap:12px;
+
+.content{ padding:14px; }
+
+/* HOME globe */
+.homeCard{
+  position:relative;
+  isolation:isolate;
 }
-.brandTitle{
-  display:flex;
-  flex-direction:column;
-  gap:4px;
+.homeCard::before{
+  content:"";
+  position:absolute;
+  right:-60px;
+  top:-60px;
+  width:430px;
+  height:430px;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.18;
+  background-repeat:no-repeat;
+  background-size:contain;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 420 420'%3E%3Cdefs%3E%3CradialGradient id='o' cx='38%25' cy='30%25' r='65%25'%3E%3Cstop offset='0' stop-color='%23ffffff' stop-opacity='.06'/%3E%3Cstop offset='.55' stop-color='%23000000' stop-opacity='.55'/%3E%3Cstop offset='1' stop-color='%23000000' stop-opacity='.92'/%3E%3C/radialGradient%3E%3CradialGradient id='rim' cx='50%25' cy='50%25' r='60%25'%3E%3Cstop offset='.72' stop-color='%232f80ff' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%232f80ff' stop-opacity='.55'/%3E%3C/radialGradient%3E%3ClinearGradient id='grid' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff' stop-opacity='.14'/%3E%3Cstop offset='1' stop-color='%23ffffff' stop-opacity='.06'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='210' cy='210' r='160' fill='url(%23o)'/%3E%3Ccircle cx='210' cy='210' r='164' fill='none' stroke='url(%23rim)' stroke-width='10'/%3E%3Cg fill='none' stroke='url(%23grid)' stroke-width='2'%3E%3Cpath d='M50 210c60-80 260-80 320 0'/%3E%3Cpath d='M50 210c60 80 260 80 320 0'/%3E%3Cpath d='M210 50c80 60 80 260 0 320'/%3E%3Cpath d='M210 50c-80 60-80 260 0 320'/%3E%3Cpath d='M90 150c45 30 195 30 240 0'/%3E%3Cpath d='M90 270c45-30 195-30 240 0'/%3E%3C/g%3E%3C/svg%3E");
 }
-.brandTitle h1{margin:0;font-size:22px;letter-spacing:.2px;}
-.brandTitle p{margin:0;color:var(--muted);font-size:13px;}
+
+.brandRow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
+.brandLeft{display:flex;align-items:flex-start;gap:12px;}
+.brandTitle{display:flex;flex-direction:column;gap:8px;}
+
+.titleStack{display:flex;flex-direction:column;gap:6px;}
+.titleStack .title{
+  margin:0;
+  font-weight:1000;
+  letter-spacing:-.6px;
+  line-height:1.05;
+  font-size:24px;
+}
+.titleStack .subtitle{
+  margin:0;
+  color:rgba(247,248,251,.88);
+  font-size:13px;
+  line-height:1.35;
+}
+.titleStack .secondary{
+  margin:0;
+  color:var(--muted);
+  font-size:12.5px;
+  line-height:1.35;
+}
+
+.modeNotes{
+  margin-top:6px;
+  color:rgba(247,248,251,.80);
+  font-size:12.5px;
+  line-height:1.35;
+}
+.modeNotes strong{ color:rgba(247,248,251,.94); }
 
 .pill{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:8px 10px;border-radius:999px;
-  border:1px solid var(--border);
-  background:rgba(255,255,255,.03);
-  color:var(--muted);
+  display:inline-flex; align-items:center; gap:8px;
+  padding:8px 10px; border-radius:999px;
+  border:1px solid rgba(47,128,255,.25);
+  background:rgba(47,128,255,.08);
+  color:rgba(247,248,251,.82);
   font-size:12px;
   user-select:none;
 }
 .dot{
   width:8px;height:8px;border-radius:999px;
-  background:var(--accent);
-  box-shadow:0 0 18px rgba(124,92,255,.55);
+  background:var(--blue);
+  box-shadow:0 0 18px rgba(47,128,255,.55);
 }
 
+/* Buttons */
 .btn{
   width:100%;
-  padding:14px;              /* reverted */
-  border-radius:14px;         /* reverted */
-  border:1px solid var(--border);
+  padding:14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
   background:rgba(255,255,255,.06);
-  color:white;
-  font-weight:800;            /* reverted */
-  cursor:pointer;
-}
-.btnPrimary{background:rgba(124,92,255,.45);}
-
-.bigPlay{
-  padding:18px!important;     /* reverted */
-  font-size:22px!important;
+  color:var(--text);
   font-weight:900;
+  cursor:pointer;
+  transition: transform var(--t) var(--ease), background var(--t) var(--ease), border-color var(--t) var(--ease);
+  will-change:transform;
+}
+.btn:active{ transform:scale(.98); }
+
+/* IMPORTANT: do not force uppercase on answers anymore */
+.choice{
+  text-transform:none;          /* <-- fix all-caps issue */
+  letter-spacing:.1px;
+  font-weight:800;
+  font-size:16px;
+  padding:14px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  border-color: rgba(255,255,255,.16);
+}
+.choice:hover{
+  border-color: rgba(47,128,255,.35);
+  box-shadow: 0 0 0 3px rgba(47,128,255,.10);
 }
 
-/* keep quickfire bigger than hardmode, but not huge */
-.bigQuickfire{
-  padding:18px!important;
-  font-size:20px!important;
-  font-weight:900!important;
-  letter-spacing:.2px;
-  border-color: rgba(124,92,255,.35);
-  box-shadow: 0 12px 24px rgba(124,92,255,.16);
+/* Primary action button */
+.btnPrimary{
+  background: linear-gradient(180deg, rgba(47,128,255,.70), rgba(27,92,255,.46));
+  border-color: rgba(47,128,255,.55);
+  box-shadow: 0 18px 42px rgba(47,128,255,.20);
 }
+.btnPrimary:hover{
+  background: linear-gradient(180deg, rgba(47,128,255,.76), rgba(27,92,255,.50));
+}
+
+/* Hardmode = darker, more dangerous */
+.btnHard{
+  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(255,255,255,.04));
+  border-color: rgba(255,255,255,.16);
+  box-shadow:
+    inset 0 0 0 1px rgba(47,128,255,.12),
+    0 10px 30px rgba(0,0,0,.25);
+}
+.btnHard:hover{
+  border-color: rgba(47,128,255,.30);
+}
+
+/* Subtle button */
+.btnSubtle{
+  font-weight:900;
+  font-size:14px;
+  padding:12px;
+  border-radius:14px;
+  border:1px dashed rgba(255,255,255,.18);
+  background:rgba(255,255,255,.04);
+  color:rgba(247,248,251,.84);
+}
+
+.bigQuickfire{ padding:18px; font-size:18px; font-weight:1000; }
+.bigPlay{ padding:18px; font-size:18px; font-weight:1000; }
 
 .row{display:flex;gap:10px;margin-top:10px;}
 .row .btn{flex:1;}
 
-.flagWrap{
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid var(--border);
-  background:rgba(0,0,0,.18);
-}
-#flag{width:100%;display:block;}
-
+/* HUD */
 .hudRow{
   display:flex;
   justify-content:space-between;
@@ -134,63 +239,97 @@ body{
   align-items:flex-end;
 }
 .hudBlock{display:flex;flex-direction:column;gap:3px;}
-.hudMain{font-weight:1000;font-size:16px;}
-.hudSub{color:var(--muted);font-size:12px;}
+.hudMain{font-weight:1000;font-size:14px;letter-spacing:.4px;}
+.hudSub{color:var(--muted);font-size:12px;letter-spacing:.2px;}
 
-.choices{margin-top:10px;display:flex;flex-direction:column;gap:10px;}
-.choice.correct{outline:2px solid var(--good);}
-.choice.wrong{outline:2px solid var(--bad);}
+/* =========================================================
+   1) FLAGS TOO SMALL — make bigger, still uniform
+   - fixed height for consistency
+   - object-fit contain preserves aspect ratio
+   - brighter frame + blue glow = more focus
+   ========================================================= */
+.flagWrap{
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(47,128,255,.26);
+  background:
+    radial-gradient(380px 180px at 50% 45%, rgba(47,128,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20)),
+    rgba(0,0,0,.22);
 
-.status{margin-top:10px;font-weight:900;letter-spacing:.2px;}
+  height: 250px;               /* increased noticeably */
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.07),
+    0 18px 48px rgba(0,0,0,.35),
+    0 0 0 4px rgba(47,128,255,.06);
+}
+
+#flag{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  padding:14px;                /* consistent framing */
+  filter: saturate(1.10) contrast(1.05); /* bold/bright but not distorted */
+}
+
+/* Choices */
+.choices{
+  margin-top:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+.choice.correct{outline:2px solid rgba(46,229,157,.88);}
+.choice.wrong{outline:2px solid rgba(255,77,109,.88);}
+
+/* Status */
+.status{
+  margin-top:10px;
+  font-weight:1000;
+  letter-spacing:.4px;
+}
 .status.good{color:var(--good);}
 .status.bad{color:var(--bad);}
 .status.neutral{color:var(--muted);}
 
+/* End screen */
 .resultBig{
-  font-size:42px;            /* reverted */
+  font-size:56px;
   font-weight:1000;
   text-align:center;
+  letter-spacing:-1px;
 }
 .resultSub{
   text-align:center;
   color:var(--muted);
   margin-top:6px;
-  font-size:14px;
+  font-size:13px;
 }
 .note{
   text-align:center;
-  color:var(--muted);
+  color:rgba(247,248,251,.82);
   margin-top:10px;
-  font-size:14px;
+  font-size:13px;
+  letter-spacing:.1px;
 }
 .divider{height:1px;background:var(--border);margin:14px 0;}
 
-.miniBtn{
-  font-weight:800;
-  font-size:14px;
-  padding:12px;
-  border-radius:14px;
-  border:1px dashed var(--border);
-  background:rgba(255,255,255,.03);
-  color:var(--muted);
-}
-
-/* Celebration */
-.perfectGlow{
-  animation: glow 900ms ease-in-out infinite alternate;
-}
+.perfectGlow{ animation: glow 900ms ease-in-out infinite alternate; }
 @keyframes glow{
   from{ text-shadow: 0 0 0 rgba(46,229,157,0); }
-  to{ text-shadow: 0 0 18px rgba(46,229,157,.35); }
+  to{ text-shadow: 0 0 22px rgba(46,229,157,.26); }
 }
-
 .confetti{position:relative;height:0;}
 .confetti i{
-  position:absolute;
-  top:-6px;
+  position:absolute; top:-6px;
   width:8px;height:14px;border-radius:4px;
-  opacity:0;
-  animation: pop 900ms ease forwards;
+  opacity:0; animation: pop 900ms ease forwards;
 }
 @keyframes pop{
   0%{ transform:translateY(0) rotate(0deg); opacity:0; }
@@ -198,25 +337,19 @@ body{
   100%{ transform:translateY(120px) rotate(240deg); opacity:0; }
 }
 
-/* Logo sizing (reverted smaller) */
-.logo{
-  width:58px;
-  height:58px;
-  flex:0 0 auto;
-  filter: drop-shadow(0 14px 22px rgba(0,0,0,.35));
-}
-
 .footerThanks{
   margin-top:12px;
   text-align:center;
-  color:rgba(243,246,255,.55);
+  color:rgba(247,248,251,.58);
   font-size:12px;
 }
 
+/* Mobile tuning: bigger flag but keep answers visible */
 @media (max-width: 420px){
-  .brandTitle h1{ font-size:21px; }
-  .logo{ width:54px; height:54px; }
-  .bigQuickfire{ font-size:19px!important; }
+  .wrap{ padding:12px; }
+  .flagWrap{ height: 220px; }  /* still bigger than before, but safe */
+  .choice{ font-size:15px; padding:13px; }
+  .bigQuickfire, .bigPlay{ font-size:17px; }
 }
 </style>
 </head>
@@ -226,61 +359,21 @@ body{
 
 <!-- HOME -->
 <section id="home" class="screen active">
-  <div class="card">
+  <div class="card homeCard">
     <div class="header">
       <div class="brandRow">
         <div class="brandLeft">
-
-          <!-- LOGO: 100% in globe with flames -->
-          <svg class="logo" viewBox="0 0 96 96" aria-hidden="true">
-            <defs>
-              <linearGradient id="gradText" x1="0" x2="1">
-                <stop offset="0" stop-color="#7c5cff" stop-opacity="0.98"/>
-                <stop offset="1" stop-color="#2ee59d" stop-opacity="0.92"/>
-              </linearGradient>
-              <linearGradient id="gradFlame" x1="0" x2="0" y1="0" y2="1">
-                <stop offset="0" stop-color="#ffcc66" stop-opacity="0.95"/>
-                <stop offset="0.55" stop-color="#ff6b6b" stop-opacity="0.92"/>
-                <stop offset="1" stop-color="#7c5cff" stop-opacity="0.70"/>
-              </linearGradient>
-              <radialGradient id="glow" cx="50%" cy="45%" r="60%">
-                <stop offset="0" stop-color="rgba(124,92,255,0.55)"/>
-                <stop offset="1" stop-color="rgba(124,92,255,0.0)"/>
-              </radialGradient>
-            </defs>
-
-            <circle cx="48" cy="48" r="42" fill="url(#glow)"/>
-
-            <g fill="url(#gradFlame)" opacity="0.95">
-              <path d="M48 3c3 6 2 10-1 14c-3-4-4-8 1-14z"/>
-              <path d="M33 6c2 6 0 10-4 13c-2-4-2-8 4-13z"/>
-              <path d="M63 6c6 5 6 9 4 13c-4-3-6-7-4-13z"/>
-              <path d="M18 14c1 6-2 10-7 12c-1-5 1-9 7-12z"/>
-              <path d="M78 14c6 3 8 7 7 12c-5-2-8-6-7-12z"/>
-              <path d="M6 38c6 2 9 6 9 11c-5-1-9-5-9-11z"/>
-              <path d="M90 38c0 6-4 10-9 11c0-5 3-9 9-11z"/>
-              <path d="M24 84c5-1 9 1 11 6c-6 1-10-1-11-6z"/>
-              <path d="M72 84c-1 5-5 7-11 6c2-5 6-7 11-6z"/>
-            </g>
-
-            <circle cx="48" cy="48" r="30" fill="rgba(255,255,255,0.04)" stroke="rgba(243,246,255,0.20)" stroke-width="2"/>
-            <g fill="none" stroke="rgba(243,246,255,0.18)" stroke-width="2">
-              <path d="M18 48c10-12 50-12 60 0"/>
-              <path d="M18 48c10 12 50 12 60 0"/>
-              <path d="M48 18c10 12 10 48 0 60"/>
-              <path d="M48 18c-10 12-10 48 0 60"/>
-              <path d="M22 36c9 6 43 6 52 0"/>
-              <path d="M22 60c9-6 43-6 52 0"/>
-            </g>
-
-            <text x="48" y="54" text-anchor="middle"
-                  font-size="20" font-weight="1000"
-                  fill="url(#gradText)" style="letter-spacing:0.5px;">100%</text>
-          </svg>
-
           <div class="brandTitle">
-            <h1>100 Percent</h1>
-            <p>One mistake ends your run.</p>
+            <div class="titleStack">
+              <h1 class="title">100% Percent</h1>
+              <p class="subtitle">One mistake ends the run.</p>
+              <p class="secondary">Can you go perfect?</p>
+            </div>
+
+            <div class="modeNotes">
+              <strong>Quickfire:</strong> Structured challenge. Learn the pattern.<br/>
+              <strong>Hardmode:</strong> Fully random. No mercy.
+            </div>
           </div>
         </div>
 
@@ -289,14 +382,11 @@ body{
     </div>
 
     <div class="content">
-      <button id="btnQuickfire" class="btn btnPrimary bigQuickfire">⚡ Quickfire (30)</button>
+      <button id="btnQuickfire" class="btn btnPrimary bigQuickfire">Quickfire</button>
       <div class="row">
-        <button id="btnHardmode" class="btn">Hardmode (195)</button>
+        <button id="btnHardmode" class="btn btnHard">Hardmode</button>
       </div>
-      <div class="note">
-        Tip: Hit <b>30/30</b> to join the <b>100% club</b> 👑
-      </div>
-      <div class="footerThanks">Thanks for playing ❤️</div>
+      <div class="footerThanks">The world is the arena.</div>
     </div>
   </div>
 </section>
@@ -337,7 +427,7 @@ body{
 <section id="end" class="screen">
   <div class="card">
     <div class="header">
-      <h2 id="endTitle">Run failed</h2>
+      <h2 id="endTitle" class="hudMain" style="margin:0;">Run failed</h2>
     </div>
 
     <div class="content">
@@ -345,19 +435,18 @@ body{
 
       <div class="resultBig" id="endPercent">0%</div>
       <div class="resultSub" id="endLine">Score: 0 / 30 (0%)</div>
-      <div class="resultSub" id="endPBLine">Best: 0 / 30</div>
+      <div class="resultSub" id="endPBLine">Personal Best: 0%</div>
       <div class="resultSub" id="endTimeLine">Time: 0:00.0</div>
       <div class="resultSub" id="endBestTimeLine">Best Time (30/30): —</div>
 
       <div class="note" id="endTryAgain"></div>
-      <div class="note" style="margin-top:8px;color:rgba(243,246,255,.55);">Thanks for playing ❤️</div>
 
       <div class="divider"></div>
 
-      <button id="btnPlayAgain" class="btn btnPrimary bigPlay">PLAY AGAIN</button>
+      <button id="btnPlayAgain" class="btn btnPrimary bigPlay">Play Again</button>
 
       <div class="row">
-        <button id="btnShare" class="btn miniBtn">Share / Copy</button>
+        <button id="btnShare" class="btn btnSubtle">Share / Copy</button>
         <button id="btnEndHome" class="btn">Home</button>
       </div>
     </div>
@@ -367,6 +456,7 @@ body{
 </div>
 
 <script>
+/* ---------------- STATE ---------------- */
 let mode="quickfire";
 let category="flags";
 let targetTotal=30;
@@ -376,16 +466,20 @@ let correct=0;
 let locked=false;
 let streak=0;
 
+/* PB at the START of the run */
+let runPBStart=0;
+
+/* timer */
 let runStartMs=0;
 let runEndMs=0;
 let timerHandle=null;
 
+/* ---------------- ELEMENTS ---------------- */
 const screens={
   home:document.getElementById("home"),
   play:document.getElementById("play"),
   end:document.getElementById("end"),
 };
-
 const flag=document.getElementById("flag");
 const choicesDiv=document.getElementById("choices");
 const statusEl=document.getElementById("status");
@@ -406,6 +500,7 @@ const endBestTimeLine=document.getElementById("endBestTimeLine");
 const endTryAgain=document.getElementById("endTryAgain");
 const confettiEl=document.getElementById("confetti");
 
+/* buttons */
 const btnQuickfire=document.getElementById("btnQuickfire");
 const btnHardmode=document.getElementById("btnHardmode");
 const btnQuit=document.getElementById("btnQuit");
@@ -414,18 +509,19 @@ const btnPlayAgain=document.getElementById("btnPlayAgain");
 const btnEndHome=document.getElementById("btnEndHome");
 const btnShare=document.getElementById("btnShare");
 
+/* ---------------- HELPERS ---------------- */
 function show(screenName){
   Object.values(screens).forEach(x=>x.classList.remove("active"));
   screens[screenName].classList.add("active");
   window.scrollTo(0,0);
 }
-
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
 function pbKey(){ return `pb_${category}_${mode}`; }
 function getPB(){ return Number(localStorage.getItem(pbKey())) || 0; }
 function setPB(v){ localStorage.setItem(pbKey(), String(v)); }
 
+/* Best time ONLY for perfect runs */
 function bestTimeKey(){ return `bestTimePerfect_${category}_${mode}`; }
 function getBestTimeMs(){
   const v=Number(localStorage.getItem(bestTimeKey()));
@@ -444,11 +540,11 @@ function formatMs(ms){
 }
 
 function renderHud(){
-  hudMode.textContent = (mode==="hardmode") ? "Hardmode" : "Quickfire";
-  hudProgress.textContent = `${correct} / ${targetTotal}`;
-  hudPB.textContent = `PB: ${getPB()} / ${targetTotal}`;
+  hudMode.textContent=(mode==="hardmode") ? "Hardmode" : "Quickfire";
+  hudProgress.textContent=`${correct} / ${targetTotal}`;
+  hudPB.textContent=`PB: ${getPB()} / ${targetTotal}`;
   const bt=getBestTimeMs();
-  hudBestTime.textContent = `Best Time (30/30): ${bt ? formatMs(bt) : "—"}`;
+  hudBestTime.textContent=`Best Time (30/30): ${bt ? formatMs(bt) : "—"}`;
 }
 
 function startTimer(){
@@ -461,15 +557,16 @@ function startTimer(){
 function stopTimer(){ if(timerHandle) clearInterval(timerHandle); timerHandle=null; }
 function finalizeTimer(){ runEndMs=Date.now(); stopTimer(); return runEndMs-runStartMs; }
 
+/* FAIL messaging (unchanged gameplay; just text rules already agreed) */
 function pickTryAgainLine(score,total){
   const pct=Math.round((score/total)*100);
-  if(score>=total-1) return "ONE away from 100% 😱 run it back!";
-  if(pct>=80) return "You were SO close… next run is it 🔥";
-  if(pct>=60) return "You're getting sharp 👀 go again!";
-  if(pct>=40) return "Nice progress — keep pushing 💪";
-  return "Warm-up round 😄 try again!";
+  if(pct>=90) return "Brutal.";
+  if(pct>=70) return "So close.";
+  if(pct>=30) return "You’re improving. Keep pushing.";
+  return "Warm up. You’ve got this.";
 }
 
+/* Confetti */
 function burstConfetti(){
   confettiEl.innerHTML="";
   const pieces=18;
@@ -480,13 +577,26 @@ function burstConfetti(){
     p.style.animationDelay=(Math.random()*120)+"ms";
     p.style.animationDuration=(700+Math.random()*500)+"ms";
     p.style.transform=`rotate(${Math.floor(Math.random()*280)}deg)`;
-    p.style.background=(Math.random()<0.5) ? "rgba(124,92,255,.95)" : "rgba(46,229,157,.90)";
+    p.style.background=(Math.random()<0.5) ? "rgba(47,128,255,.95)" : "rgba(46,229,157,.90)";
     confettiEl.appendChild(p);
   }
 }
 
+/* Preload first flag (performance) */
+function preloadImage(src){
+  return new Promise((resolve, reject)=>{
+    if(!src) return reject(new Error("Missing image_url"));
+    const img=new Image();
+    img.onload=()=>resolve(true);
+    img.onerror=()=>reject(new Error("Failed to load flag image"));
+    img.src=src;
+  });
+}
+
+/* ---------------- GAME FLOW ---------------- */
 async function startRun(newMode){
   mode=newMode;
+  runPBStart=getPB();
   correct=0;
   idx=0;
   streak=0;
@@ -501,21 +611,34 @@ async function startRun(newMode){
 
   startTimer();
 
-  const res=await fetch(`/api/questionset?mode=${mode}&category=${category}`,{cache:"no-store"});
-  const data=await res.json();
+  try{
+    const res=await fetch(`/api/questionset?mode=${mode}&category=${category}`, {cache:"no-store"});
+    if(!res.ok){
+      const txt=await res.text();
+      throw new Error(`API ${res.status}: ${txt.slice(0,200)}`);
+    }
 
-  if(data.error){
+    const data=await res.json();
+    if(data.error) throw new Error(data.error);
+
+    questions=data.questions || [];
+    targetTotal=data.totalPlanned || (mode==="hardmode" ? 195 : 30);
+
+    if(!Array.isArray(questions) || questions.length===0){
+      throw new Error("No questions returned from API.");
+    }
+
+    await preloadImage(questions[0].image_url);
+
+    renderHud();
+    showQuestion();
+
+  }catch(e){
     stopTimer();
     statusEl.className="status bad";
-    statusEl.textContent="Error: "+data.error;
-    return;
+    statusEl.textContent="Could not load. Restart.";
+    noteEl.textContent=String(e.message || e);
   }
-
-  questions=data.questions||[];
-  targetTotal=data.totalPlanned||30;
-
-  renderHud();
-  showQuestion();
 }
 
 function showQuestion(){
@@ -526,15 +649,18 @@ function showQuestion(){
   renderHud();
 
   const q=questions[idx];
-  if(!q) return endRun("Run ended");
+  if(!q || !q.image_url || !Array.isArray(q.choices)){
+    return endRun("Run ended");
+  }
 
+  flag.removeAttribute("src");
   flag.src=q.image_url;
 
   choicesDiv.innerHTML="";
   q.choices.forEach((txt,i)=>{
     const b=document.createElement("button");
-    b.className="btn choice";
-    b.textContent=txt;
+    b.className="btn choice"; /* choice styling controls casing */
+    b.textContent=txt;        /* keep original casing from API */
     b.onclick=()=>answer(i,b);
     choicesDiv.appendChild(b);
   });
@@ -556,29 +682,29 @@ function answer(i,btn){
     if(correct>getPB()) setPB(correct);
 
     statusEl.className="status good";
-    statusEl.textContent=(streak>=3) ? `🔥 ${streak} streak` : "✅ Correct";
+    statusEl.textContent=(streak>=3) ? `STREAK ${streak}` : "CORRECT";
 
     renderHud();
 
     setTimeout(()=>{
       idx++;
-      if(idx>=questions.length) return endRun("🎉 PERFECT RUN");
+      if(idx>=questions.length) return endRun("PERFECT RUN");
       showQuestion();
     },380);
+
   }else{
     streak=0;
-
     statusEl.className="status bad";
-    statusEl.textContent="❌ Wrong";
+    statusEl.textContent="FAILED";
     btn.classList.add("wrong");
 
     if(mode==="quickfire"){
       const correctBtn=allBtns[q.correct_index];
       if(correctBtn) correctBtn.classList.add("correct");
-      noteEl.textContent=`Correct answer: ${q.choices[q.correct_index]}`;
+      noteEl.textContent=`Correct: ${q.choices[q.correct_index]}`;
     }
 
-    setTimeout(()=>endRun("❌ Run failed"),850);
+    setTimeout(()=>endRun("Run failed"),850);
   }
 }
 
@@ -598,10 +724,10 @@ function endRun(title){
   show("end");
 
   if(perfect){
-    endTitle.textContent="🏆 100% PERFECT!";
+    endTitle.textContent="PERFECT. 100%.";
     endPercent.classList.add("perfectGlow");
     burstConfetti();
-    endTryAgain.textContent="That’s elite. Screenshot it 😄";
+    endTryAgain.textContent="Elite. Lock it in.";
   }else{
     endTitle.textContent=title;
     endPercent.classList.remove("perfectGlow");
@@ -611,7 +737,20 @@ function endRun(title){
 
   endPercent.textContent=`${pct}%`;
   endLine.textContent=`Score: ${correct} / ${targetTotal} (${pct}%)`;
-  endPBLine.textContent=`Best: ${getPB()} / ${targetTotal}`;
+
+  if(perfect){
+    endPBLine.textContent=`Best: ${getPB()} / ${targetTotal}`;
+  }else{
+    const currentPercent = pct;
+    const previousBestPercent = Math.round((runPBStart/targetTotal)*100);
+    if(currentPercent > previousBestPercent){
+      const gain = currentPercent - previousBestPercent;
+      endPBLine.textContent = `🔼 New Personal Best (+${gain})`;
+    }else{
+      endPBLine.textContent = `Personal Best: ${previousBestPercent}%`;
+    }
+  }
+
   endTimeLine.textContent=`Time: ${formatMs(elapsedMs)}`;
   const bt=getBestTimeMs();
   endBestTimeLine.textContent=`Best Time (30/30): ${bt ? formatMs(bt) : "—"}`;
@@ -619,20 +758,20 @@ function endRun(title){
   setTimeout(()=>btnPlayAgain.focus(),80);
 }
 
+/* ---------------- SHARE ---------------- */
 function buildShareText(){
   const pct=clamp(Math.round((correct/targetTotal)*100),0,100);
   const url=window.location.origin;
   const modeLabel=(mode==="hardmode") ? "Hardmode" : "Quickfire";
   return `I scored ${pct}% on 100 Percent (Flags ${modeLabel}). Can you beat me? ${url}`;
 }
-
 async function shareScore(){
   const text=buildShareText();
 
   if(navigator.share){
     try{
       await navigator.share({title:"100 Percent", text});
-      btnShare.textContent="Shared ✅";
+      btnShare.textContent="Shared";
       setTimeout(()=>btnShare.textContent="Share / Copy",1200);
       return;
     }catch(e){}
@@ -640,13 +779,14 @@ async function shareScore(){
 
   try{
     await navigator.clipboard.writeText(text);
-    btnShare.textContent="Copied ✅";
+    btnShare.textContent="Copied";
     setTimeout(()=>btnShare.textContent="Share / Copy",1200);
   }catch(e){
     window.prompt("Copy this:", text);
   }
 }
 
+/* ---------------- BUTTONS ---------------- */
 btnQuickfire.onclick=()=>startRun("quickfire");
 btnHardmode.onclick=()=>startRun("hardmode");
 btnQuit.onclick=()=>{ stopTimer(); show("home"); };

@@ -1,6 +1,6 @@
 // Vercel Serverless Function: /api/questionset
 // Flags:
-// - Quickfire: 30 questions ramping difficulty: 10 Tier1 + 10 Tier2 + 10 Tier3
+// - Quickfire: 30 questions ramping difficulty: 12 Tier1 + 10 Tier2 + 8 Tier3
 // - Hardmode: all 195 shuffled
 // No caching so each run is unique.
 
@@ -144,11 +144,11 @@ function buildTieredQuickfire(allCountries) {
     return picks;
   }
 
-  let q1 = takeFromTier(tier1, 10);
+  let q1 = takeFromTier(tier1, 12);
   let q2 = takeFromTier(tier2, 10);
-  let q3 = takeFromTier(tier3, 10);
+  let q3 = takeFromTier(tier3, 8);
 
-  // Top-up logic (if any tier had <10 available due to list mismatch)
+  // Top-up logic (if any tier had fewer available due to list mismatch)
   const need = 30 - (q1.length + q2.length + q3.length);
   if (need > 0) {
     const remaining = allCountries
@@ -198,7 +198,7 @@ module.exports = async (req, res) => {
       shuffleInPlace(runCountries);
       runCountries = runCountries.slice(0, 195);
     } else {
-      // Quickfire: tier ramp 10/10/10
+      // Quickfire: tier ramp 12/10/8
       runCountries = buildTieredQuickfire(flagsCache.countries);
       runCountries = runCountries.slice(0, 30);
     }
@@ -223,7 +223,7 @@ module.exports = async (req, res) => {
       totalUsed: questions.length,
       questions,
       generatedAt: Date.now(),
-      quickfireRamp: mode !== "hardmode" ? { tier1: 10, tier2: 10, tier3: 10 } : null,
+      quickfireRamp: mode !== "hardmode" ? { tier1: 12, tier2: 10, tier3: 8 } : null,
     });
   } catch (e) {
     return res.status(500).json({ error: e.message });
