@@ -6,35 +6,22 @@
 <title>100 Percent</title>
 
 <style>
-/* =========================================================
-   UI/BRANDING (VISUAL ONLY)
-   Fixes:
-   1) Flag bigger + uniform
-   2) Answers not all-caps
-   3) Brighter / more energy with electric blue accents
-   ========================================================= */
 :root{
-  /* Base */
   --bg:#141414;
-  --panel:#1b1b1b;              /* slightly brighter than before */
-  --panel2:#212121;             /* brighter surface layer */
-  --panel3:#262626;             /* used for emphasized zones */
+  --panel:#1b1b1b;
+  --panel2:#212121;
   --border:rgba(255,255,255,.11);
 
-  /* Text */
   --text:#f7f8fb;
   --muted:rgba(247,248,251,.74);
 
-  /* Accent */
   --blue:#2f80ff;
   --blue2:#1b5cff;
   --blueGlow:rgba(47,128,255,.25);
 
-  /* Status */
   --good:#2ee59d;
   --bad:#ff4d6d;
 
-  /* Motion */
   --t:170ms;
   --ease:cubic-bezier(.2,.9,.2,1);
 }
@@ -46,8 +33,6 @@ body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, "Inter", "Segoe UI", Roboto, Arial, sans-serif;
   color:var(--text);
-
-  /* Brighter energy without childish gradients */
   background:
     radial-gradient(900px 520px at 18% -12%, rgba(47,128,255,.22), transparent 62%),
     radial-gradient(780px 560px at 86% 8%, rgba(255,255,255,.05), transparent 55%),
@@ -56,29 +41,23 @@ body{
     var(--bg);
 }
 
-.wrap{
-  max-width:560px;
-  margin:auto;
-  padding:14px;
-}
+.wrap{ max-width:560px; margin:auto; padding:14px; }
 
 .screen{ display:none; }
 .screen.active{ display:block; }
 
-/* Home centered only */
-#home.active{
+#home.active,
+#categoryPick.active{
   min-height:100vh;
   display:flex;
   align-items:center;
 }
 
-/* Panels */
 .card{
   width:100%;
   border:1px solid var(--border);
   border-radius:18px;
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
   overflow:hidden;
   box-shadow: 0 22px 60px rgba(0,0,0,.38);
 }
@@ -86,18 +65,14 @@ body{
 .header{
   padding:16px 16px 14px;
   border-bottom:1px solid var(--border);
-  background:
-    linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.08));
+  background: linear-gradient(180deg, rgba(0,0,0,.20), rgba(0,0,0,.08));
   backdrop-filter: blur(6px);
 }
 
 .content{ padding:14px; }
 
-/* HOME globe */
-.homeCard{
-  position:relative;
-  isolation:isolate;
-}
+/* Home globe background */
+.homeCard{ position:relative; isolation:isolate; }
 .homeCard::before{
   content:"";
   position:absolute;
@@ -114,7 +89,6 @@ body{
 }
 
 .brandRow{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;}
-.brandLeft{display:flex;align-items:flex-start;gap:12px;}
 .brandTitle{display:flex;flex-direction:column;gap:8px;}
 
 .titleStack{display:flex;flex-direction:column;gap:6px;}
@@ -138,14 +112,6 @@ body{
   line-height:1.35;
 }
 
-.modeNotes{
-  margin-top:6px;
-  color:rgba(247,248,251,.80);
-  font-size:12.5px;
-  line-height:1.35;
-}
-.modeNotes strong{ color:rgba(247,248,251,.94); }
-
 .pill{
   display:inline-flex; align-items:center; gap:8px;
   padding:8px 10px; border-radius:999px;
@@ -159,6 +125,68 @@ body{
   width:8px;height:8px;border-radius:999px;
   background:var(--blue);
   box-shadow:0 0 18px rgba(47,128,255,.55);
+}
+
+/* Tiles */
+.grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap:10px;
+  margin-top:14px;
+}
+.tile{
+  border:1px solid rgba(255,255,255,.14);
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+  border-radius:16px;
+  padding:14px;
+  cursor:pointer;
+  transition: transform var(--t) var(--ease), border-color var(--t) var(--ease), background var(--t) var(--ease);
+  will-change: transform;
+  min-height:92px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.tile:active{ transform:scale(.98); }
+.tile:hover{
+  border-color: rgba(47,128,255,.32);
+  box-shadow: 0 0 0 3px rgba(47,128,255,.10);
+}
+.tileTop{
+  display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.tileName{ font-weight:1000; letter-spacing:.2px; }
+.tileIcon{
+  width:34px;height:34px;border-radius:12px;
+  background: rgba(47,128,255,.12);
+  border:1px solid rgba(47,128,255,.25);
+  display:flex; align-items:center; justify-content:center;
+  box-shadow: 0 14px 24px rgba(47,128,255,.12);
+}
+.tileSub{ color:var(--muted); font-size:12px; line-height:1.3; }
+
+.tile.disabled{
+  cursor:not-allowed;
+  opacity:.55;
+}
+.tile.disabled:hover{
+  border-color: rgba(255,255,255,.14);
+  box-shadow:none;
+}
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:18px;
+  transform:translateX(-50%);
+  background: rgba(0,0,0,.65);
+  border:1px solid rgba(255,255,255,.14);
+  padding:10px 12px;
+  border-radius:999px;
+  color:rgba(247,248,251,.90);
+  font-size:12px;
+  letter-spacing:.2px;
+  display:none;
+  z-index:9999;
 }
 
 /* Buttons */
@@ -176,9 +204,89 @@ body{
 }
 .btn:active{ transform:scale(.98); }
 
-/* IMPORTANT: do not force uppercase on answers anymore */
+.btnPrimary{
+  background: linear-gradient(180deg, rgba(47,128,255,.70), rgba(27,92,255,.46));
+  border-color: rgba(47,128,255,.55);
+  box-shadow: 0 18px 42px rgba(47,128,255,.20);
+}
+.btnPrimary:hover{
+  background: linear-gradient(180deg, rgba(47,128,255,.76), rgba(27,92,255,.50));
+}
+.btnHard{
+  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(255,255,255,.04));
+  border-color: rgba(255,255,255,.16);
+  box-shadow: inset 0 0 0 1px rgba(47,128,255,.12), 0 10px 30px rgba(0,0,0,.25);
+}
+.btnHard:hover{ border-color: rgba(47,128,255,.30); }
+
+.btnSubtle{
+  font-weight:900;
+  font-size:14px;
+  padding:12px;
+  border-radius:14px;
+  border:1px dashed rgba(255,255,255,.18);
+  background:rgba(255,255,255,.04);
+  color:rgba(247,248,251,.84);
+}
+
+.row{display:flex;gap:10px;margin-top:10px;}
+.row .btn{flex:1;}
+.bigPrimary{ padding:18px; font-size:18px; font-weight:1000; }
+
+.footerThanks{ margin-top:12px; text-align:center; color:rgba(247,248,251,.58); font-size:12px; }
+
+/* HUD */
+.hudRow{ display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:flex-end; }
+.hudBlock{ display:flex; flex-direction:column; gap:3px; }
+.hudMain{ font-weight:1000; font-size:14px; letter-spacing:.4px; }
+.hudSub{ color:var(--muted); font-size:12px; letter-spacing:.2px; }
+
+/* Flag area stays uniform */
+.flagWrap{
+  border-radius:16px;
+  overflow:hidden;
+  border:1px solid rgba(47,128,255,.26);
+  background:
+    radial-gradient(380px 180px at 50% 45%, rgba(47,128,255,.10), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20)),
+    rgba(0,0,0,.22);
+
+  height: 250px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,.07),
+    0 18px 48px rgba(0,0,0,.35),
+    0 0 0 4px rgba(47,128,255,.06);
+}
+#flag{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  object-position:center;
+  display:block;
+  padding:14px;
+  filter: saturate(1.10) contrast(1.05);
+}
+
+.prompt{
+  margin-top:10px;
+  font-weight:900;
+  font-size:15px;
+  letter-spacing:.2px;
+  color:rgba(247,248,251,.92);
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  padding:10px 12px;
+  border-radius:14px;
+}
+
+.choices{ margin-top:12px; display:flex; flex-direction:column; gap:10px; }
+
 .choice{
-  text-transform:none;          /* <-- fix all-caps issue */
+  text-transform:none; /* IMPORTANT: not all caps */
   letter-spacing:.1px;
   font-weight:800;
   font-size:16px;
@@ -190,142 +298,22 @@ body{
   border-color: rgba(47,128,255,.35);
   box-shadow: 0 0 0 3px rgba(47,128,255,.10);
 }
+.choice.correct{ outline:2px solid rgba(46,229,157,.88); }
+.choice.wrong{ outline:2px solid rgba(255,77,109,.88); }
 
-/* Primary action button */
-.btnPrimary{
-  background: linear-gradient(180deg, rgba(47,128,255,.70), rgba(27,92,255,.46));
-  border-color: rgba(47,128,255,.55);
-  box-shadow: 0 18px 42px rgba(47,128,255,.20);
-}
-.btnPrimary:hover{
-  background: linear-gradient(180deg, rgba(47,128,255,.76), rgba(27,92,255,.50));
-}
+.status{ margin-top:10px; font-weight:1000; letter-spacing:.4px; }
+.status.good{ color:var(--good); }
+.status.bad{ color:var(--bad); }
+.status.neutral{ color:var(--muted); }
 
-/* Hardmode = darker, more dangerous */
-.btnHard{
-  background: linear-gradient(180deg, rgba(0,0,0,.18), rgba(255,255,255,.04));
-  border-color: rgba(255,255,255,.16);
-  box-shadow:
-    inset 0 0 0 1px rgba(47,128,255,.12),
-    0 10px 30px rgba(0,0,0,.25);
-}
-.btnHard:hover{
-  border-color: rgba(47,128,255,.30);
-}
-
-/* Subtle button */
-.btnSubtle{
-  font-weight:900;
-  font-size:14px;
-  padding:12px;
-  border-radius:14px;
-  border:1px dashed rgba(255,255,255,.18);
-  background:rgba(255,255,255,.04);
-  color:rgba(247,248,251,.84);
-}
-
-.bigQuickfire{ padding:18px; font-size:18px; font-weight:1000; }
-.bigPlay{ padding:18px; font-size:18px; font-weight:1000; }
-
-.row{display:flex;gap:10px;margin-top:10px;}
-.row .btn{flex:1;}
-
-/* HUD */
-.hudRow{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  flex-wrap:wrap;
-  align-items:flex-end;
-}
-.hudBlock{display:flex;flex-direction:column;gap:3px;}
-.hudMain{font-weight:1000;font-size:14px;letter-spacing:.4px;}
-.hudSub{color:var(--muted);font-size:12px;letter-spacing:.2px;}
-
-/* =========================================================
-   1) FLAGS TOO SMALL — make bigger, still uniform
-   - fixed height for consistency
-   - object-fit contain preserves aspect ratio
-   - brighter frame + blue glow = more focus
-   ========================================================= */
-.flagWrap{
-  border-radius:16px;
-  overflow:hidden;
-  border:1px solid rgba(47,128,255,.26);
-  background:
-    radial-gradient(380px 180px at 50% 45%, rgba(47,128,255,.10), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.06), rgba(0,0,0,.20)),
-    rgba(0,0,0,.22);
-
-  height: 250px;               /* increased noticeably */
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  box-shadow:
-    inset 0 0 0 1px rgba(255,255,255,.07),
-    0 18px 48px rgba(0,0,0,.35),
-    0 0 0 4px rgba(47,128,255,.06);
-}
-
-#flag{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-  object-position:center;
-  display:block;
-  padding:14px;                /* consistent framing */
-  filter: saturate(1.10) contrast(1.05); /* bold/bright but not distorted */
-}
-
-/* Choices */
-.choices{
-  margin-top:12px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-.choice.correct{outline:2px solid rgba(46,229,157,.88);}
-.choice.wrong{outline:2px solid rgba(255,77,109,.88);}
-
-/* Status */
-.status{
-  margin-top:10px;
-  font-weight:1000;
-  letter-spacing:.4px;
-}
-.status.good{color:var(--good);}
-.status.bad{color:var(--bad);}
-.status.neutral{color:var(--muted);}
-
-/* End screen */
-.resultBig{
-  font-size:56px;
-  font-weight:1000;
-  text-align:center;
-  letter-spacing:-1px;
-}
-.resultSub{
-  text-align:center;
-  color:var(--muted);
-  margin-top:6px;
-  font-size:13px;
-}
-.note{
-  text-align:center;
-  color:rgba(247,248,251,.82);
-  margin-top:10px;
-  font-size:13px;
-  letter-spacing:.1px;
-}
-.divider{height:1px;background:var(--border);margin:14px 0;}
+.resultBig{ font-size:56px; font-weight:1000; text-align:center; letter-spacing:-1px; }
+.resultSub{ text-align:center; color:var(--muted); margin-top:6px; font-size:13px; }
+.note{ text-align:center; color:rgba(247,248,251,.82); margin-top:10px; font-size:13px; letter-spacing:.1px; }
+.divider{ height:1px; background:var(--border); margin:14px 0; }
 
 .perfectGlow{ animation: glow 900ms ease-in-out infinite alternate; }
-@keyframes glow{
-  from{ text-shadow: 0 0 0 rgba(46,229,157,0); }
-  to{ text-shadow: 0 0 22px rgba(46,229,157,.26); }
-}
-.confetti{position:relative;height:0;}
+@keyframes glow{ from{ text-shadow:0 0 0 rgba(46,229,157,0);} to{ text-shadow:0 0 22px rgba(46,229,157,.26);} }
+.confetti{ position:relative; height:0; }
 .confetti i{
   position:absolute; top:-6px;
   width:8px;height:14px;border-radius:4px;
@@ -337,19 +325,11 @@ body{
   100%{ transform:translateY(120px) rotate(240deg); opacity:0; }
 }
 
-.footerThanks{
-  margin-top:12px;
-  text-align:center;
-  color:rgba(247,248,251,.58);
-  font-size:12px;
-}
-
-/* Mobile tuning: bigger flag but keep answers visible */
 @media (max-width: 420px){
   .wrap{ padding:12px; }
-  .flagWrap{ height: 220px; }  /* still bigger than before, but safe */
+  .flagWrap{ height:220px; }
   .choice{ font-size:15px; padding:13px; }
-  .bigQuickfire, .bigPlay{ font-size:17px; }
+  .bigPrimary{ font-size:17px; }
 }
 </style>
 </head>
@@ -362,31 +342,77 @@ body{
   <div class="card homeCard">
     <div class="header">
       <div class="brandRow">
-        <div class="brandLeft">
-          <div class="brandTitle">
-            <div class="titleStack">
-              <h1 class="title">100% Percent</h1>
-              <p class="subtitle">One mistake ends the run.</p>
-              <p class="secondary">Can you go perfect?</p>
-            </div>
-
-            <div class="modeNotes">
-              <strong>Quickfire:</strong> Structured challenge. Learn the pattern.<br/>
-              <strong>Hardmode:</strong> Fully random. No mercy.
-            </div>
+        <div class="brandTitle">
+          <div class="titleStack">
+            <h1 class="title">100% Percent</h1>
+            <p class="subtitle">One mistake ends the run.</p>
+            <p class="secondary">Can you go perfect?</p>
           </div>
         </div>
-
-        <div class="pill"><span class="dot"></span><span>Flags</span></div>
+        <div class="pill"><span class="dot"></span><span id="pillText">Categories</span></div>
       </div>
     </div>
 
     <div class="content">
-      <button id="btnQuickfire" class="btn btnPrimary bigQuickfire">Quickfire</button>
-      <div class="row">
-        <button id="btnHardmode" class="btn btnHard">Hardmode</button>
+      <div class="grid">
+        <div class="tile" id="tileFlags">
+          <div class="tileTop">
+            <div class="tileName">Flags</div>
+            <div class="tileIcon">🏁</div>
+          </div>
+          <div class="tileSub">Instant recognition. Pure reflex.</div>
+        </div>
+
+        <div class="tile" id="tileCapitals">
+          <div class="tileTop">
+            <div class="tileName">Capital Cities</div>
+            <div class="tileIcon">🏛️</div>
+          </div>
+          <div class="tileSub">Pressure test your geography memory.</div>
+        </div>
+
+        <div class="tile disabled" id="tileSpelling">
+          <div class="tileTop">
+            <div class="tileName">Spelling</div>
+            <div class="tileIcon">✍️</div>
+          </div>
+          <div class="tileSub">Coming Soon</div>
+        </div>
+
+        <div class="tile disabled" id="tileContinents">
+          <div class="tileTop">
+            <div class="tileName">Continents</div>
+            <div class="tileIcon">🌍</div>
+          </div>
+          <div class="tileSub">Coming Soon</div>
+        </div>
       </div>
+
       <div class="footerThanks">The world is the arena.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORY PICK -->
+<section id="categoryPick" class="screen">
+  <div class="card">
+    <div class="header">
+      <div class="brandRow" style="align-items:center;">
+        <div class="brandTitle">
+          <div class="hudMain" id="catTitle" style="font-size:16px;">Flags</div>
+          <div class="hudSub">Choose your mode.</div>
+        </div>
+        <div class="pill"><span class="dot"></span><span id="catPill">Flags</span></div>
+      </div>
+    </div>
+
+    <div class="content">
+      <button id="btnCatQuickfire" class="btn btnPrimary bigPrimary">Quickfire</button>
+      <button id="btnCatHardmode" class="btn btnHard bigPrimary" style="margin-top:10px;">Hardmode</button>
+
+      <div class="row">
+        <button id="btnCatBack" class="btn btnSubtle">Back</button>
+      </div>
     </div>
   </div>
 </section>
@@ -411,6 +437,7 @@ body{
 
     <div class="content">
       <div class="flagWrap"><img id="flag" alt="flag"></div>
+      <div id="prompt" class="prompt" style="display:none;"></div>
       <div class="choices" id="choices"></div>
       <div id="status" class="status neutral"></div>
       <div id="note" class="note"></div>
@@ -443,7 +470,7 @@ body{
 
       <div class="divider"></div>
 
-      <button id="btnPlayAgain" class="btn btnPrimary bigPlay">Play Again</button>
+      <button id="btnPlayAgain" class="btn btnPrimary bigPrimary">Play Again</button>
 
       <div class="row">
         <button id="btnShare" class="btn btnSubtle">Share / Copy</button>
@@ -455,21 +482,20 @@ body{
 
 </div>
 
+<div id="toast" class="toast"></div>
+
 <script>
 /* ---------------- STATE ---------------- */
 let mode="quickfire";
-let category="flags";
+let category="flags";        // flags | capitals
 let targetTotal=30;
 let questions=[];
 let idx=0;
 let correct=0;
 let locked=false;
 let streak=0;
-
-/* PB at the START of the run */
 let runPBStart=0;
 
-/* timer */
 let runStartMs=0;
 let runEndMs=0;
 let timerHandle=null;
@@ -477,10 +503,15 @@ let timerHandle=null;
 /* ---------------- ELEMENTS ---------------- */
 const screens={
   home:document.getElementById("home"),
+  categoryPick:document.getElementById("categoryPick"),
   play:document.getElementById("play"),
   end:document.getElementById("end"),
 };
+
+const toastEl=document.getElementById("toast");
+
 const flag=document.getElementById("flag");
+const promptEl=document.getElementById("prompt");
 const choicesDiv=document.getElementById("choices");
 const statusEl=document.getElementById("status");
 const noteEl=document.getElementById("note");
@@ -500,9 +531,19 @@ const endBestTimeLine=document.getElementById("endBestTimeLine");
 const endTryAgain=document.getElementById("endTryAgain");
 const confettiEl=document.getElementById("confetti");
 
+const tileFlags=document.getElementById("tileFlags");
+const tileCapitals=document.getElementById("tileCapitals");
+const tileSpelling=document.getElementById("tileSpelling");
+const tileContinents=document.getElementById("tileContinents");
+
+const catTitle=document.getElementById("catTitle");
+const catPill=document.getElementById("catPill");
+
+const btnCatQuickfire=document.getElementById("btnCatQuickfire");
+const btnCatHardmode=document.getElementById("btnCatHardmode");
+const btnCatBack=document.getElementById("btnCatBack");
+
 /* buttons */
-const btnQuickfire=document.getElementById("btnQuickfire");
-const btnHardmode=document.getElementById("btnHardmode");
 const btnQuit=document.getElementById("btnQuit");
 const btnRestartRun=document.getElementById("btnRestartRun");
 const btnPlayAgain=document.getElementById("btnPlayAgain");
@@ -515,13 +556,21 @@ function show(screenName){
   screens[screenName].classList.add("active");
   window.scrollTo(0,0);
 }
+
+let toastTimer=null;
+function toast(msg){
+  toastEl.textContent=msg;
+  toastEl.style.display="block";
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{ toastEl.style.display="none"; }, 1200);
+}
+
 function clamp(n,a,b){ return Math.max(a, Math.min(b,n)); }
 
 function pbKey(){ return `pb_${category}_${mode}`; }
 function getPB(){ return Number(localStorage.getItem(pbKey())) || 0; }
 function setPB(v){ localStorage.setItem(pbKey(), String(v)); }
 
-/* Best time ONLY for perfect runs */
 function bestTimeKey(){ return `bestTimePerfect_${category}_${mode}`; }
 function getBestTimeMs(){
   const v=Number(localStorage.getItem(bestTimeKey()));
@@ -557,7 +606,6 @@ function startTimer(){
 function stopTimer(){ if(timerHandle) clearInterval(timerHandle); timerHandle=null; }
 function finalizeTimer(){ runEndMs=Date.now(); stopTimer(); return runEndMs-runStartMs; }
 
-/* FAIL messaging (unchanged gameplay; just text rules already agreed) */
 function pickTryAgainLine(score,total){
   const pct=Math.round((score/total)*100);
   if(pct>=90) return "Brutal.";
@@ -566,7 +614,6 @@ function pickTryAgainLine(score,total){
   return "Warm up. You’ve got this.";
 }
 
-/* Confetti */
 function burstConfetti(){
   confettiEl.innerHTML="";
   const pieces=18;
@@ -582,18 +629,35 @@ function burstConfetti(){
   }
 }
 
-/* Preload first flag (performance) */
 function preloadImage(src){
   return new Promise((resolve, reject)=>{
     if(!src) return reject(new Error("Missing image_url"));
     const img=new Image();
     img.onload=()=>resolve(true);
-    img.onerror=()=>reject(new Error("Failed to load flag image"));
+    img.onerror=()=>reject(new Error("Failed to load image"));
     img.src=src;
   });
 }
 
-/* ---------------- GAME FLOW ---------------- */
+/* ---------------- CATEGORY NAV ---------------- */
+function openCategory(cat){
+  category=cat;
+  const nice = (cat==="flags") ? "Flags" : "Capital Cities";
+  catTitle.textContent = nice;
+  catPill.textContent = nice;
+  show("categoryPick");
+}
+
+tileFlags.onclick = ()=> openCategory("flags");
+tileCapitals.onclick = ()=> openCategory("capitals");
+tileSpelling.onclick = ()=> toast("Spelling — Coming Soon");
+tileContinents.onclick = ()=> toast("Continents — Coming Soon");
+btnCatBack.onclick = ()=> show("home");
+
+btnCatQuickfire.onclick = ()=> startRun("quickfire");
+btnCatHardmode.onclick = ()=> startRun("hardmode");
+
+/* ---------------- GAME FLOW (UNCHANGED LOOP) ---------------- */
 async function startRun(newMode){
   mode=newMode;
   runPBStart=getPB();
@@ -609,6 +673,10 @@ async function startRun(newMode){
   statusEl.textContent="Loading...";
   statusEl.className="status neutral";
 
+  // prompt visible only for capitals
+  promptEl.style.display = (category==="capitals") ? "block" : "none";
+  if(category!=="capitals") promptEl.textContent="";
+
   startTimer();
 
   try{
@@ -617,22 +685,23 @@ async function startRun(newMode){
       const txt=await res.text();
       throw new Error(`API ${res.status}: ${txt.slice(0,200)}`);
     }
-
     const data=await res.json();
     if(data.error) throw new Error(data.error);
 
-    questions=data.questions || [];
-    targetTotal=data.totalPlanned || (mode==="hardmode" ? 195 : 30);
+    questions=data.questions||[];
+    targetTotal=data.totalPlanned || 30;
 
     if(!Array.isArray(questions) || questions.length===0){
       throw new Error("No questions returned from API.");
     }
 
-    await preloadImage(questions[0].image_url);
+    // Preload first image only if it exists (flags). Capitals uses prompt text.
+    if(questions[0].image_url){
+      await preloadImage(questions[0].image_url);
+    }
 
     renderHud();
     showQuestion();
-
   }catch(e){
     stopTimer();
     statusEl.className="status bad";
@@ -649,18 +718,34 @@ function showQuestion(){
   renderHud();
 
   const q=questions[idx];
-  if(!q || !q.image_url || !Array.isArray(q.choices)){
+  if(!q || !Array.isArray(q.choices)){
     return endRun("Run ended");
   }
 
-  flag.removeAttribute("src");
-  flag.src=q.image_url;
+  // Flags: show image
+  if(q.image_url){
+    flag.style.display="block";
+    flag.removeAttribute("src");
+    flag.src=q.image_url;
+  }else{
+    // Capitals: no image
+    flag.style.display="none";
+  }
+
+  // Capitals: show prompt
+  if(category==="capitals"){
+    promptEl.style.display="block";
+    promptEl.textContent = q.prompt || "What is the capital?";
+  }else{
+    promptEl.style.display="none";
+    promptEl.textContent="";
+  }
 
   choicesDiv.innerHTML="";
   q.choices.forEach((txt,i)=>{
     const b=document.createElement("button");
-    b.className="btn choice"; /* choice styling controls casing */
-    b.textContent=txt;        /* keep original casing from API */
+    b.className="btn choice";
+    b.textContent=txt;
     b.onclick=()=>answer(i,b);
     choicesDiv.appendChild(b);
   });
@@ -758,12 +843,12 @@ function endRun(title){
   setTimeout(()=>btnPlayAgain.focus(),80);
 }
 
-/* ---------------- SHARE ---------------- */
 function buildShareText(){
   const pct=clamp(Math.round((correct/targetTotal)*100),0,100);
   const url=window.location.origin;
   const modeLabel=(mode==="hardmode") ? "Hardmode" : "Quickfire";
-  return `I scored ${pct}% on 100 Percent (Flags ${modeLabel}). Can you beat me? ${url}`;
+  const catLabel=(category==="capitals") ? "Capital Cities" : "Flags";
+  return `I scored ${pct}% on 100 Percent (${catLabel} ${modeLabel}). Can you beat me? ${url}`;
 }
 async function shareScore(){
   const text=buildShareText();
@@ -786,9 +871,7 @@ async function shareScore(){
   }
 }
 
-/* ---------------- BUTTONS ---------------- */
-btnQuickfire.onclick=()=>startRun("quickfire");
-btnHardmode.onclick=()=>startRun("hardmode");
+/* Buttons */
 btnQuit.onclick=()=>{ stopTimer(); show("home"); };
 btnRestartRun.onclick=()=>startRun(mode);
 btnPlayAgain.onclick=()=>startRun(mode);
