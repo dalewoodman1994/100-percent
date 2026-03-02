@@ -1,46 +1,26 @@
 // server.js
-// Local dev server for your game.
-// IMPORTANT: This server REUSES the Vercel API function at ./api/questionset.js
-// so localhost behaves exactly like your Vercel deployment.
-
-"use strict";
+// Local dev server for your static index.html + API route /api/questionset
+// On Vercel, the /api/questionset route uses api/questionset.js directly.
 
 const express = require("express");
 const path = require("path");
 
-// Load .env if present (safe even if you don't use it)
-try {
-  require("dotenv").config();
-} catch (_) {
-  // ignore if dotenv not installed
-}
-
 const app = express();
+const PORT = process.env.PORT || 3001;
 
-// Use 3001 by default so it doesn't clash with other projects on 3000
-const PORT = Number(process.env.PORT || 3001);
-
-// ---------- Static Files ----------
 const ROOT_DIR = __dirname;
 
-// Serve your static site files (index.html, about.html, privacy.html, css/images if any)
-app.use(express.static(ROOT_DIR, { extensions: ["html"] }));
-
-// ---------- API Handlers ----------
-// Reuse Vercel serverless function locally
 let questionsetHandler = null;
-
 try {
-  // This requires you to have: /api/questionset.js (folder MUST be lowercase "api")
-  questionsetHandler = require("./api/questionset");
+  questionsetHandler = require(path.join(ROOT_DIR, "api", "questionset.js"));
 } catch (err) {
-  console.error("❌ Could not load ./api/questionset.js");
+  console.error("❌ Could not load api/questionset.js");
   console.error("   Make sure the file exists at: C:\\Users\\Clare\\100game\\api\\questionset.js");
   console.error("   NOTE: folder name must be lowercase 'api'");
   console.error("   Error:", err.message);
 }
 
-// Health check (useful for debugging)
+// Health check
 app.get("/api/status", (req, res) => {
   res.json({
     ok: true,
@@ -51,7 +31,7 @@ app.get("/api/status", (req, res) => {
   });
 });
 
-// Questionset API (flags + capitals)
+// API route
 app.get("/api/questionset", async (req, res) => {
   if (!questionsetHandler) {
     return res.status(500).json({
@@ -60,7 +40,21 @@ app.get("/api/questionset", async (req, res) => {
     });
   }
 
-  // Forward to the same handler Vercel uses
+  // Validate categories and modes here too (nice error messages)
+  const category = String(req.query.category || "flags").toLowerCase();
+  const mode = String(req.query.mode || "quickfire").toLowerCase();
+
+  if (!["flags", "capitals"].includes(category)) {
+    return res.status(400).json({
+      error: "Unknown category. Use 'flags' or 'capitals'.",
+    });
+  }
+  if (!["quickfire", "hardmode"].includes(mode)) {
+    return res.status(400).json({
+      error: "Unknown mode. Use 'quickfire' or 'hardmode'.",
+    });
+  }
+
   try {
     return await questionsetHandler(req, res);
   } catch (err) {
@@ -69,30 +63,22 @@ app.get("/api/questionset", async (req, res) => {
   }
 });
 
-// ---------- Page Routes ----------
+// Serve static files (optional)
+app.use(express.static(ROOT_DIR));
+
 // Root loads index.html
 app.get("/", (req, res) => {
   res.sendFile(path.join(ROOT_DIR, "index.html"));
 });
 
-// Optional direct routes if you want them explicit
-app.get("/about", (req, res) => {
-  res.sendFile(path.join(ROOT_DIR, "about.html"));
-});
-
-app.get("/privacy", (req, res) => {
-  res.sendFile(path.join(ROOT_DIR, "privacy.html"));
-});
-
-// ---------- 404 ----------
+// 404
 app.use((req, res) => {
   res.status(404).send("Not Found");
 });
 
-// ---------- Start ----------
 app.listen(PORT, () => {
-  console.log(`✅ Server running: http://localhost:${PORT}`);
-  console.log(`✅ Status:   http://localhost:${PORT}/api/status`);
-  console.log(`✅ Flags:    http://localhost:${PORT}/api/questionset?mode=quickfire&category=flags`);
-  console.log(`✅ Capitals: http://localhost:${PORT}/api/questionset?mode=quickfire&category=capitals`);
+  console.log(`✅ Server running: http://127.0.0.1:${PORT}`);
+  console.log(`✅ Status:   http://127.0.0.1:${PORT}/api/status`);
+  console.log(`✅ Flags:    http://127.0.0.1:${PORT}/api/questionset?mode=quickfire&category=flags`);
+  console.log(`✅ Capitals: http://127.0.0.1:${PORT}/api/questionset?mode=quickfire&category=capitals`);
 });
